@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Tool</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='bulma.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='custom.css') }}">
+
+
+</head>
+<body>
+<div class="container is-fullheight is-fullwidth">
+    <section class="section is-bordered">
+        <nav class="level">
+            <p class="level-item has-text-centered">
+            </p>
+
+        </nav>
+    </section>
+    <section class="section" style="">
+        <div class="container" style="">
+            <div class="columns is-fullheight">
+                <div class="column is-one-fifth" style="position: fixed;">
+                    <button class="toplevelnav mb-2 button is-large is-primary is-fullwidth">Personnel</button>
+                    <button class="toplevelnav mb-2 button is-large is-primary is-fullwidth">Vehicles</button>
+                    <button class="toplevelnav mb-2 button is-large is-primary is-fullwidth">Assignment</button>
+                </div>
+                <div class="column"></div>
+                <div class="column  is-two-thirds">
+                    <div id="Personnel" class="appPanel container panel" style="display: none">
+                        <div class="columns">
+                            <div class="column is-three-fifths m-5 mr-3" style="">
+                                Name:
+                                <input class="input m-2" type="text" id="inputPersonName" placeholder="Name">
+                                Rank:
+                                <div class="dropdown is-right m-2" id="dropDownRank">
+                                    <div class="dropdown-trigger">
+                                        <button class="button" aria-haspopup="true" aria-controls="dropDownRank">
+                                            <span id="content"></span>
+                                            <span class="icon is-small">
+                                            <i class="fas fa-angle-down" aria-hidden="true"></i>
+                                            </span>
+                                        </button>
+                                    </div>
+                                    <div class="dropdown-menu" id="dropDownRank" role="menu">
+                                        <div class="dropdown-content" style="height: 300px; overflow-y: scroll">
+                                            {% for rank in ranks %}
+                                                <a class="dropdown-item dropdownRankItem" href="#">
+                                                    {{ rank }}
+                                                </a>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                </div>
+                            Unit:
+                                <div class="dropdown m-2" id="dropDownUnit">
+                                    <div class="dropdown-trigger">
+                                        <button class="button" style="width: 80px;" aria-haspopup="true" aria-controls="dropDownUnit">
+                                            <span id="content"></span>
+                                            <i class="fas fa-angle-down" aria-hidden="true"></i>
+                                            </span>
+                                        </button>
+                                    </div>
+                                    <div class="dropdown-menu" id="dropDownUnit" role="menu">
+                                        <div class="dropdown-content">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="addUnit" class="button m-2 is-link">+</div>
+<div id="addUnitPanel" class="modal">
+                                    <div class="modal-background"></div>
+                                    <div class="modal-card">
+                                        <header class="modal-card-head">
+                                            <p class="modal-card-title">Add Unit Type</p>
+                                            <button class="cancelUnit delete" aria-label="close"></button>
+                                        </header>
+                                        <section class="modal-card-body">
+                                            Unit
+                                            <input class="input m-2" type="text" id="inputUnitName"
+                                                   placeholder="Name">
+
+                                        </section>
+                                        <footer class="modal-card-foot">
+                                            <button id="saveUnit" class="button is-success">Save</button>
+                                            <button class="cancelUnit button">Cancel</button>
+                                        </footer>
+                                    </div>
+                                </div>
+                                <label class="checkbox m-2">
+                                    <input type="checkbox" id="chkPersonLicense">
+                                    License
+                                </label>
+                                <div class="block"></div>
+                                <div class="columns is-centered">
+                                    <div class="column has-text-centered">
+                                        <button class="button align is-centered" id="btnSubmitPerson">Submit</button>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="column" style="border-left: 1px solid gray; height: 400px; overflow-y: scroll;">
+                                <div id="lstPersonnel" class="column listview_parent">
+                                    <div class="listview_item personItem template">
+                                        <div id="removePerson" style="float: right"><a>✖</a></div>
+                                        <p class="title">SPC Macintosh</p>
+                                        <p class="unit">1PLT</p></div>
+
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="Vehicles" class="appPanel container" style="">
+                        <div class="columns panel">
+                            <div class="column is-three-fifths m-5 mr-3">
+                                Bumper #:
+                                <input id="inputVehicleBumper" class="input m-2" type="text" placeholder="Text input">
+                                <label class="checkbox m-2">
+                                    <input id="chkVehicleRadio" type="checkbox">
+                                    Radio
+                                </label>
+                                <label class="checkbox m-2">
+                                    <input id="chkVehicleJBCP" type="checkbox">
+                                    JBCP
+                                </label>
+                                <div class="block"></div>
+                                <div class="columns is-centered">
+                                    <div class="column has-text-centered">
+                                        <button class="button align is-centered" id="btnSubmitVehicle">Submit</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="column">
+                                <div class="block"></div>
+                                <p>Type:</p>
+                                <div class="dropdown m-2" id="dropDownVicType">
+                                    <div class="dropdown-trigger">
+                                        <button class="button" aria-haspopup="true" style="width: 80px;" aria-controls="dropDownVicType">
+                                            <span id="content"></span>
+                                            <i class="fas fa-angle-down" aria-hidden="true"></i>
+                                            </span>
+                                        </button>
+                                    </div>
+                                    <div class="dropdown-menu" id="dropDownVicType" role="menu">
+                                        <div class="dropdown-content">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="addVehicleType" class="button m-2 is-link">+</div>
+                                <div id="removeVehicleType" class="button m-2 is-danger">x</div>
+                                <div id="addVehicleTypePanel" class="modal">
+                                    <div class="modal-background"></div>
+                                    <div class="modal-card">
+                                        <header class="modal-card-head">
+                                            <p class="modal-card-title">Add Vehicle Type</p>
+                                            <button class="cancelVehicleType delete" aria-label="close"></button>
+                                        </header>
+                                        <section class="modal-card-body">
+                                            Vehicle Type Name
+                                            <input class="input m-2" type="text" id="inputVehicleTypeName"
+                                                   placeholder="Name">
+                                            <div class="block"></div>
+                                            Image Preview
+                                            <div class="columns">
+                                                <div class="column is-two-fifths">
+                                                    <img class="vehicleTypeImagePreview" id="imgVehicleTypePreview"/>
+                                                </div>
+                                                <div class="column">
+                                                    <input id="chooseTypeImage" style="overflow: hidden; width: 180px"
+                                                           type="file" accept="image/*">
+
+                                                </div>
+                                            </div>
+
+                                        </section>
+                                        <footer class="modal-card-foot">
+                                            <button id="saveVehicleType" class="button is-success">Save</button>
+                                            <button class="cancelVehicleType button">Cancel</button>
+                                        </footer>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="block "></div>
+                        <div class="block "></div>
+
+                        <div id="lstVehicles" class="columns is-multiline is-centered">
+                            <div class="column is-one-quarter panel vehiclePanel template" style="">
+                                <div class="columns" style="height: 128px;">
+                                    <div class="column vehiclePanelImage">
+                                    </div>
+                                    <div style="float:right" class="column has-text-centered">
+                                        <div style="float:right"><a id="removeVehicle">✖</a></div>
+                                        <p class="bumper">C200</p>
+                                        <p class="type">M1097</p>
+                                        <p class="unit">1PLT</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="Assignment" class="appPanel container" style="display: none">
+                        <div class="columns">
+                            <div id="lstAssignVehicles" class="column is-two-thirds">
+                                <div class="enditem_panel panel template">
+                                    <div>
+                                        <div class="columns pr-4 pl-4 mb-0">
+                                            <div class="is-two-fifths column"></div>
+                                            <div class="is-one-third column has-text-centered">
+                                                <p id="enditem_bumperNumber"
+                                                   style="font-size: larger; font-weight: bold">C200</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div class="columns pr-4 pl-4 mb-0">
+                                            <div class="is-one-third column ">Driver</div>
+                                            <div class="is-one-third column">TC</div>
+                                            <div class="is-one-third column">Trailer</div>
+                                        </div>
+                                        <div>
+                                            <div class="columns pr-4 pl-4">
+                                                <div class="column is-one-third">
+                                                    <div id="inputDriver"
+                                                         class="assignmentDropzone button is-fullwidth">SPC
+                                                        Butternautica
+                                                    </div>
+                                                </div>
+                                                <div class="column is-one-third">
+                                                    <div id="inputTC"
+                                                         class="assignmentDropzone button is-fullwidth"></div>
+                                                </div>
+                                                <div class="column is-one-third">
+                                                    <div id="inputTrailer"
+                                                         class="assignmentDropzone button is-fullwidth"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="column"></div>
+                            <div class="column is-one-quarter">
+                                <div id="lstAssignPersonnel" class="column panel"
+                                     style="overflow-y: scroll; position:fixed; height: 400px; width:20%;">
+                                    <div class="assignmentPersonItem listview_item template"
+                                         draggable="true">
+                                        <p class="title">placeholder</p>
+                                    </div>
+                                </div>
+                                <div id="lstAssignFilters" class="column panel " style="display: none; height:120px">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+</section>
+</div>
+</body>
+<script src="{{ url_for('static', filename='jquery-3.6.0.min.js') }}"></script>
+<script src="{{ url_for('static', filename='primary.js') }}"></script>
+
+</html>

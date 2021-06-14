@@ -1,0 +1,80 @@
+.listview_parent {
+    padding-left: 2%;
+    padding-right: 2%;
+}
+
+.listview_item {
+    padding: 4%;
+    padding-left: 8%;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    cursor: pointer;
+}
+.listview_item:hover {
+    background-color: #96C5F7;
+}
+.listview_item:active {
+    background-color: #00b89c;
+}
+.listview_item > .title {
+    font-weight: bold;
+    font-size: medium;
+    margin-bottom: 2%;
+}
+
+.toplevelnav {
+}
+
+.appPanel {
+
+}
+
+
+
+.vehiclePanel {
+    height: 128px;
+    margin: 5px;
+    cursor: pointer;
+}
+
+.vehiclePanel.is-active {
+    background-color: #96C5F7;
+}
+
+div.vehiclePanel .bumper {
+    font-weight: bold;
+    font-size: large;
+}
+
+.vehiclePanelImage {
+    background-size: cover;
+    background-image: url("/static/images/noimage.jpg");
+
+}
+
+.personItem {
+    cursor: pointer;
+}
+
+.assignmentPersonItem {
+    cursor: grab;
+}
+
+.template {
+    display: none;
+}
+
+.hidden {
+    display: none;
+}
+
+.vehicleTypeImagePreview {
+    height: 140px;
+    width: 188px;
+    margin-top: 2%;
+
+}
+
+.dragging {
+    cursor: grabbing;
+}
