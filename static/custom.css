@@ -16,6 +16,11 @@
 .listview_item:active {
     background-color: #00b89c;
 }
+
+.personItem.is-active {
+    background-color: #00b89c;
+}
+
 .listview_item > .title {
     font-weight: bold;
     font-size: medium;
@@ -77,4 +82,23 @@ div.vehiclePanel .bumper {
 
 .dragging {
     cursor: grabbing;
+}
+
+.edit-warning {
+    color: #f14668;
+    font-weight: bold;
+    position: absolute;
+    width: 100%;
+}
+
+.dropdown-item {
+    cursor: pointer;
+}
+
+.dropdown-item:hover {
+    background-color: lightgray;
+}
+
+.dropdown-item > .delete {
+    float: right;
 }

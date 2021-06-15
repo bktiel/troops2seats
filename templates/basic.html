@@ -28,7 +28,8 @@
                 </div>
                 <div class="column"></div>
                 <div class="column  is-two-thirds">
-                    <div id="Personnel" class="appPanel container panel" style="display: none">
+                    <div id="Personnel" class="appPanel container panel hidden" >
+                        <div id="lblPersonEditWarning" class="has-text-centered edit-warning"></div>
                         <div class="columns">
                             <div class="column is-three-fifths m-5 mr-3" style="">
                                 Name:
@@ -94,7 +95,8 @@
                                 <div class="block"></div>
                                 <div class="columns is-centered">
                                     <div class="column has-text-centered">
-                                        <button class="button align is-centered" id="btnSubmitPerson">Submit</button>
+                                        <button class="button align is-centered is-success" id="btnSubmitPerson">Submit</button>
+                                        <button class="button align is-centered is-warning hidden" id="btnCancelSubmitPerson">Cancel</button>
                                     </div>
                                 </div>
 
@@ -102,7 +104,7 @@
                             <div class="column" style="border-left: 1px solid gray; height: 400px; overflow-y: scroll;">
                                 <div id="lstPersonnel" class="column listview_parent">
                                     <div class="listview_item personItem template">
-                                        <div id="removePerson" style="float: right"><a>✖</a></div>
+                                        <div id="removePerson" style="float: right"><button class="delete"></button></div>
                                         <p class="title">SPC Macintosh</p>
                                         <p class="unit">1PLT</p></div>
 
@@ -112,6 +114,7 @@
                         </div>
                     </div>
                     <div id="Vehicles" class="appPanel container" style="">
+                        <div id="lblVehicleEditWarning" class="has-text-centered edit-warning"></div>
                         <div class="columns panel">
                             <div class="column is-three-fifths m-5 mr-3">
                                 Bumper #:
@@ -127,7 +130,8 @@
                                 <div class="block"></div>
                                 <div class="columns is-centered">
                                     <div class="column has-text-centered">
-                                        <button class="button align is-centered" id="btnSubmitVehicle">Submit</button>
+                                        <button class="button align is-centered is-success" id="btnSubmitVehicle">Submit</button>
+                                        <button class="button align is-centered is-warning hidden" id="btnCancelSubmitVehicle">Cancel</button>
                                     </div>
                                 </div>
                             </div>
@@ -191,7 +195,7 @@
                                     <div class="column vehiclePanelImage">
                                     </div>
                                     <div style="float:right" class="column has-text-centered">
-                                        <div style="float:right"><a id="removeVehicle">✖</a></div>
+                                        <div style="float:right"><button id="removeVehicle" class="delete"></button></div>
                                         <p class="bumper">C200</p>
                                         <p class="type">M1097</p>
                                         <p class="unit">1PLT</p>
@@ -200,7 +204,7 @@
                             </div>
                         </div>
                     </div>
-                    <div id="Assignment" class="appPanel container" style="display: none">
+                    <div id="Assignment" class="appPanel container hidden">
                         <div class="columns">
                             <div id="lstAssignVehicles" class="column is-two-thirds">
                                 <div class="enditem_panel panel template">
