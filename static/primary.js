@@ -221,7 +221,7 @@ function addVehicleAssignment(index,original,location=$('#lstAssignVehicles')) {
             var assignment = vehicleAssignments[index];
             $(node).find("#enditem_bumperNumber").text(vehicles[assignment.vehicle].bumper);
             $(node).find("#enditem_type").text(vehicles[assignment.vehicle].type.name);
-            $(node).find("#enditem_unit").text(vehicles[assignment.vehicle].unit);
+            $(node).find("#enditem_unit").text(units[vehicles[assignment.vehicle].unit]);
 
             //if no TC or driver, leave empty and coat red
             var driverElement = $(node).find("#inputDriver");
