@@ -127,7 +127,7 @@ div.vehiclePanel .bumper {
 }
 
 .renderPage {
-    width: 80vh;
+    width: 90vh;
     position:absolute;
 }
 
@@ -154,11 +154,37 @@ div.vehiclePanel .bumper {
     border-radius: 4px;
 }
 
+.enditem_panel {
+    margin-bottom:6%;
+}
+
+#imgVehiclePanelPreview {
+    border-radius: 5px;
+    margin-top: 5px;
+    width:50%;
+    margin-left:4%;
+    height: 100px;
+    background-position: center;
+    background-size: 100% 100%;
+}
+
 @media print {
-  .renderPage {
-    height: 90vh;
-      position: absolute;
-  }
+    .enditem_panel {
+        width: 32%;
+        margin-right:10%;
+    }
+    #renderContainer {
+        width: 100vh;
+        margin-left:0.5%;
+        margin-top:0.5%;
+    }
+    .present {
+        background-color: #f14668;
+    }
+    * {
+    -webkit-print-color-adjust: exact !important;   /* Chrome, Safari */
+    color-adjust: exact !important;                 /*Firefox*/
+}
 }
 
 

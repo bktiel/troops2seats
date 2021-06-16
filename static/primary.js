@@ -3,7 +3,7 @@ var noImage = "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEAYABgAAD/4QBoRXhpZgAATU
 
 //globals
 var units = ["1PLT"]
-var personnel = [{ name: "Burch", rank: "SPC", unit: units[0]}];
+var personnel = [{ name: "Burch", rank: "SPC", unit: 0}];
 var vehicleTypes = [{name: "M1097", image: noImage}];
 var vehicles = [{bumper: "C200", type: vehicleTypes[0]}];
 var editingItem = false;
@@ -38,6 +38,9 @@ $(".dropdownRankItem").click(function () {
 $("#btnGenReport").click(function () {
     $("#main").toggle();
     $("#render").toggle();
+    for (index = 0; index < vehicleAssignments.length; index++) {
+        addVehicleAssignment(index,$('.enditem_panel.template')[0],$("#renderContainer")[0])
+    }
 })
 
 //render all personnel on Panel and ensure visible
@@ -137,7 +140,7 @@ function renderAssignmentsPanel() {
             var person = personnel[index]
             //check if already in assignment.
             var personInAssignments = vehicleAssignments.find(assignment => {
-                return (assignment.driver === person || assignment.tc === person);
+                return (personnel[assignment.driver] === person || personnel[assignment.tc] === person);
             })
             if (!personInAssignments) {
                 addPersonItem(person)
@@ -152,8 +155,7 @@ function renderAssignmentsPanel() {
     vehicleAssignments.forEach(function (item, index) {
         if(item !== undefined) {
             //not in vehicles, remove
-            console.log(item.vehicle)
-            if (vehicles.indexOf(item.vehicle) === -1) {
+            if (vehicles[item.vehicle] === undefined) {
                 vehicleAssignments[index] = undefined;
             }
         }
@@ -162,22 +164,21 @@ function renderAssignmentsPanel() {
         //make sure all vehicles have vehicleAssignment obj
         try {
             var vehicleInAssignments = vehicleAssignments.find(assignment => {
-                return assignment.vehicle === item;
+                return vehicles[assignment.vehicle] === item;
         })
         }
         catch (e) {
             return;
         }
-
         if (!vehicleInAssignments) {
             //if not in, create
             vehicleAssignments.push(
                 {
-                    vehicle: item,
-                    driver: "",
-                    tc: "",
-                    trailer: "",
-                    valid: ""
+                    vehicle: vehicles.indexOf(item),
+                    driver: undefined,
+                    tc: undefined,
+                    trailer: undefined,
+                    valid: false
                 }
             )
         }
@@ -185,30 +186,36 @@ function renderAssignmentsPanel() {
     //now write to page
     var original = $('.enditem_panel.template')[0]
     for (index = 0; index < vehicleAssignments.length; index++) {
-        try {
+        addVehicleAssignment(index,original)
+    }
+}
+
+//add vehicle assignment to page
+function addVehicleAssignment(index,original,location=$('#lstAssignVehicles')) {
+            try {
             node = original.cloneNode(true);
             var assignment = vehicleAssignments[index];
-            $(node).find("#enditem_bumperNumber").text(assignment.vehicle.bumper);
+            $(node).find("#enditem_bumperNumber").text(vehicles[assignment.vehicle].bumper);
             //if no TC or driver, leave empty and coat red
             var driverElement = $(node).find("#inputDriver");
             var tcElement = $(node).find("#inputTC");
             var trailerElement = $(node).find("#inputTrailer");
-            if (assignment.driver.name !== undefined) {
-                driverElement.text(assignment.driver.rank + " " + assignment.driver.name);
+            if (assignment.driver !== undefined) {
+                driverElement.text(personnel[assignment.driver].rank + " " + personnel[assignment.driver].name);
                 driverElement.addClass("is-success is-light")
             } else {
                 driverElement.text("");
                 driverElement.addClass("is-danger is-light");
             }
-            if (assignment.tc.name !== undefined) {
-                tcElement.text(assignment.tc.rank + " " + assignment.tc.name);
+            if (assignment.tc !== undefined) {
+                tcElement.text(personnel[assignment.tc].rank + " " + personnel[assignment.tc].name);
                 tcElement.addClass("is-success is-light");
             } else {
                 tcElement.text("");
                 tcElement.addClass("is-danger is-light");
             }
-            if (assignment.trailer.bumper !== undefined) {
-                trailerElement.text(assignment.trailer.bumper);
+            if (assignment.trailer !== undefined) {
+                trailerElement.text(vehicles[assignment.trailer].bumper);
                 trailerElement.addClass("is-success is-light");
             } else {
                 trailerElement.text("");
@@ -216,22 +223,22 @@ function renderAssignmentsPanel() {
             }
             //image
             try {
-                $(node).find(".enditem_vehiclePreview").css("background-image", "url(" + assignment.vehicle.type.image + ")");
+                $(node).find(".enditem_vehiclePreview").css("background-image", "url(" + vehicles[assignment.vehicle].type.image + ")");
             }
             catch (e) {
 
             }
             //set indicators
-            if(assignment.vehicle.radio) {
+            if(vehicles[assignment.vehicle].radio) {
                 $(node).find(".radioProperty").addClass("present")
             }
-            if(assignment.vehicle.jbcp) {
+            if(vehicles[assignment.vehicle].jbcp) {
                 $(node).find(".jbcpProperty").addClass("present")
             }
 
             $(node).attr('id', index);
             $(node).removeClass("template");
-            $('#lstAssignVehicles').append(node);
+            location.append(node);
 
             //event handlers
             var items = [driverElement, tcElement, trailerElement]
@@ -249,14 +256,8 @@ function renderAssignmentsPanel() {
             // tcElement[0].addEventListener('drop',assignmentDropPerson);
             // trailerElement[0].addEventListener('drop',assignmentDropPerson);
         } catch (e) {
-            continue;
+            return;
         }
-    }
-}
-
-//add vehicle assignment to page
-function addVehicleAssignment() {
-
 }
 
 //main navigation on the page through side buttons
@@ -325,6 +326,10 @@ $("#lstVehicles").on('click', ".vehiclePanel", function (e) {
 $("#lstPersonnel").on('click', "#removePerson", function (e) {
     var node = e.target.closest("div.personItem");
     var nodeID = node.id;
+    //if deleting edited item, clear
+    if(nodeID===editingItem) {
+        cleanPersonnelPanel();
+    }
     personnel[nodeID] = undefined;
     node.remove();
 });
@@ -355,7 +360,7 @@ $("#lstPersonnel").on('click', ".personItem", function (e) {
         $("#inputPersonName").val(targetPerson.name);
         $('#chkPersonLicense').prop('checked', targetPerson.license);
         $('#dropDownRank.dropdown').find('#content').text(targetPerson.rank);
-        $('#dropDownUnit.dropdown').find('#content').text(targetPerson.unit);
+        $('#dropDownUnit.dropdown').find('#content').text(units[targetPerson.unit]);
     } catch (e) {
         alert("error occured while loading for edit");
     }
@@ -385,7 +390,7 @@ $("#btnSubmitPerson").click(function () {
     var newPerson = {
         name: $("#inputPersonName").val(),
         rank: $('#dropDownRank.dropdown').find('#content').text(),
-        unit: $('#dropDownUnit.dropdown').find('button').text(),
+        unit: units.indexOf($('#dropDownUnit.dropdown').find('button').text()),
         license: $("#chkPersonLicense")[0].checked
     }
     if (newPerson.name.length <= 0) {
@@ -431,7 +436,7 @@ function addPerson(newPerson, node = null) {
     }
 
     $(node).find(".title").text(newPerson.rank + ' ' + newPerson.name);
-    $(node).find(".unit").text(newPerson.unit);
+    $(node).find(".unit").text(units[newPerson.unit]);
     $(node).attr('id', personnel.indexOf(newPerson));
     $(node).removeClass("template");
     $('#lstPersonnel').append(node);
@@ -441,6 +446,10 @@ function addPerson(newPerson, node = null) {
 $("#lstVehicles").on('click', "#removeVehicle", function (e) {
     var node = e.target.closest("div.vehiclePanel");
     var nodeID = node.id;
+    //if this is the same as what's being edited, clear
+    if(nodeID===editingItem) {
+        cleanVehiclePanel();
+    }
     vehicles[nodeID] = undefined;
     node.remove();
 });
@@ -507,7 +516,7 @@ function addVehicle(newVehicle, node = null) {
     } catch (e) {
         $(node).find(".type").text("")
     }
-    $(node).find(".unit").text(newVehicle.unit);
+    $(node).find(".unit").text(units[newVehicle.unit]);
     $(node).attr('id', vehicles.indexOf(newVehicle));
     $(node).removeClass("template");
     $('#lstVehicles').append(node);
@@ -605,6 +614,8 @@ $(".dropdown-content").on('click', ".vehicleTypeItem", function (e) {
     if (vehicleTypes[this.id] === undefined) return;
     targetButton.text(vehicleTypes[this.id].name)
     targetButton.attr("id", this.id)
+    //set preview
+    $("#imgVehiclePanelPreview").css("background-image", "url(" + vehicleTypes[this.id].image + ")");
     // $("#removeVehicleType").removeClass("hidden");
 });
 
@@ -650,12 +661,12 @@ function assignmentDropPerson(e) {
     //do different things depending on what target is
     var person = personnel[targetPersonID]
     if (e.target.id === "inputDriver") {
-        thisEndItem.driver = person;
+        thisEndItem.driver = personnel.indexOf(person);
         e.target.innerHTML = person.rank + " " + person.name;
         e.target.classList.add("is-success");
         e.target.classList.remove("is-danger");
     } else if (e.target.id === "inputTC") {
-        thisEndItem.tc = person;
+        thisEndItem.tc = personnel.indexOf(person);
         e.target.innerHTML = person.rank + " " + person.name;
         e.target.classList.add("is-success");
         e.target.classList.remove("is-danger");
@@ -671,12 +682,12 @@ $("#lstAssignVehicles").on('click', ".assignmentDropzone", function (e) {
     var thisEndItem = vehicleAssignments[e.target.closest(".enditem_panel").id];
     var person = undefined;
     if (this.id === "inputDriver") {
-        person = thisEndItem.driver;
-        thisEndItem.driver = "";
+        person = personnel[thisEndItem.driver];
+        thisEndItem.driver = undefined;
     }
     if (this.id === "inputTC") {
-        person = thisEndItem.tc;
-        thisEndItem.tc = "";
+        person = personnel[thisEndItem.tc];
+        thisEndItem.tc = undefined;
     }
     this.innerHTML = "";
     this.classList.remove("is-success")

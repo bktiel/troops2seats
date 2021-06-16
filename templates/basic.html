@@ -4,53 +4,53 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Tool</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='bulma.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='custom.css') }}">
+    <link rel="stylesheet" media="all" href="{{ url_for('static', filename='bulma.css') }}">
+    <link rel="stylesheet" media="all" href="{{ url_for('static', filename='custom.css') }}">
 
 
 </head>
 <body>
 <div id="render" class="container renderPage hidden">
-    <div class="columns is-multiline is-centered">
-        <div class="column renderItem panel is-two-fifths">
-            <div class="columns">
-                <div class="column is-one-third" style="height: 80px;">
-                    picture goes here
-                </div>
-            </div>
-            <div class="columns">
-                <div class="column has-text-centered">JBCP</div>
-                <div class="column has-text-centered">Radio</div>
-                <div class="column has-text-centered">Licenses</div>
-            </div>
-            <div class="columns">
-                <div class="column ">
-                    <div><p>TC</p>  </div>
-                    <div><p>DRIVER</p></div>
-                    <div><p>TRAILER</p></div>
-                </div>
-            </div>
-        </div>
-        <div class="column renderItem panel is-two-fifths">
-            <div class="columns">
-                <div class="column is-one-third" style="height: 80px;">
-                    picture goes here
-                </div>
-            </div>
-            <div class="columns">
-                <div class="column is-one-quarter">
-                    <div>JBCP</div>
-                    <div>Radio</div>
-                    <div>Crew</div>
-
-                </div>
-                <div class="column ">
-                    <div><p>TC</p></div>
-                    <div><p>DRIVER</p></div>
-                    <div><p>TRAILER</p></div>
-                </div>
-            </div>
-        </div>
+    <div id="renderContainer" class="columns is-multiline ">
+{#        <div class="column renderItem panel is-two-fifths">#}
+{#            <div class="columns">#}
+{#                <div class="column is-one-third" style="height: 80px;">#}
+{#                    picture goes here#}
+{#                </div>#}
+{#            </div>#}
+{#            <div class="columns">#}
+{#                <div class="column has-text-centered">JBCP</div>#}
+{#                <div class="column has-text-centered">Radio</div>#}
+{#                <div class="column has-text-centered">Licenses</div>#}
+{#            </div>#}
+{#            <div class="columns">#}
+{#                <div class="column ">#}
+{#                    <div><p>TC</p>  </div>#}
+{#                    <div><p>DRIVER</p></div>#}
+{#                    <div><p>TRAILER</p></div>#}
+{#                </div>#}
+{#            </div>#}
+{#        </div>#}
+{#        <div class="column renderItem panel is-two-fifths">#}
+{#            <div class="columns">#}
+{#                <div class="column is-one-third" style="height: 80px;">#}
+{#                    picture goes here#}
+{#                </div>#}
+{#            </div>#}
+{#            <div class="columns">#}
+{#                <div class="column is-one-quarter">#}
+{#                    <div>JBCP</div>#}
+{#                    <div>Radio</div>#}
+{#                    <div>Crew</div>#}
+{##}
+{#                </div>#}
+{#                <div class="column ">#}
+{#                    <div><p>TC</p></div>#}
+{#                    <div><p>DRIVER</p></div>#}
+{#                    <div><p>TRAILER</p></div>#}
+{#                </div>#}
+{#            </div>#}
+{#        </div>#}
 
 
 
@@ -205,7 +205,7 @@
                                     </div>
                                 </div>
                                 <div id="addVehicleType" class="button m-2 is-link">+</div>
-                                <div id="removeVehicleType" class="button m-2 is-danger">x</div>
+                                <div id="imgVehiclePanelPreview"></div>
                                 <div id="addVehicleTypePanel" class="modal">
                                     <div class="modal-background"></div>
                                     <div class="modal-card">

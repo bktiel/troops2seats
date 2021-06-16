@@ -8587,7 +8587,7 @@ label.panel-block:hover {
   }
 }
 
-@media screen and (min-width: 769px), print {
+  @media screen and (min-width: 769px), print {
   .columns.is-variable.is-5-tablet {
     --columnGap: 1.25rem;
   }
