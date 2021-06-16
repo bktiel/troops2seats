@@ -14,7 +14,7 @@ var vehicleTypes = [
     {name: "M1097", image: noImage, isEquipment: false},
     {name: "Trailer", image: noImage, isEquipment: true}];
 var vehicles = [
-    {bumper: "C200", type: vehicleTypes[0], unit: 0}];
+    {bumper: "C200", type: 0, unit: 0}];
 var editingItem = false;
 var vehicleAssignments = [];
 
@@ -204,7 +204,7 @@ function genEquipmentAssignmentPanel() {
     //populate equipment from vehicles that have that checked
     for (index = 0; index < vehicles.length; index++) {
         try {
-            if (vehicles[index].type.isEquipment) {
+            if (vehicleTypes[vehicles[index].type].isEquipment) {
                 var gear = vehicles[index];
                 //check if already in assignment.
                 var gearInAssignments = vehicleAssignments.find(assignment => {
@@ -231,7 +231,7 @@ function genVehicleAssignments() {
     vehicleAssignments.forEach(function (item, index) {
         if (item !== undefined) {
             //not in vehicles, remove
-            if (vehicles[item.vehicle] === undefined || vehicles[item.vehicle].type.isEquipment) {
+            if (vehicles[item.vehicle] === undefined || vehicleTypes[vehicles[item.vehicle].type].isEquipment) {
                 vehicleAssignments[index] = undefined;
             }
         }
@@ -250,7 +250,7 @@ function genVehicleAssignments() {
         } catch (e) {
             return;
         }
-        if (!vehicleInAssignments && !item.type.isEquipment) {
+        if (!vehicleInAssignments && !vehicleTypes[item.type].isEquipment) {
             //if not in, create
             vehicleAssignments.push(
                 {
@@ -274,7 +274,7 @@ function addVehicleAssignment(index, original, location = $('#lstAssignVehicles'
             return false;
         }
         $(node).find("#enditem_bumperNumber").text(vehicles[assignment.vehicle].bumper);
-        $(node).find("#enditem_type").text(vehicles[assignment.vehicle].type.name);
+        $(node).find("#enditem_type").text(vehicleTypes[vehicles[assignment.vehicle].type].name);
         $(node).find("#enditem_unit").text(units[vehicles[assignment.vehicle].unit]);
 
         //if no TC or driver, leave empty and coat red
@@ -304,7 +304,7 @@ function addVehicleAssignment(index, original, location = $('#lstAssignVehicles'
         }
         //image
         try {
-            $(node).find(".enditem_vehiclePreview").css("background-image", "url(" + vehicles[assignment.vehicle].type.image + ")");
+            $(node).find(".enditem_vehiclePreview").css("background-image", "url(" + vehicleTypes[vehicles[assignment.vehicle].type].image + ")");
         } catch (e) {
         }
         //set indicators
@@ -411,9 +411,9 @@ $("#lstVehicles").on('click', ".vehiclePanel", function (e) {
     $("#inputVehicleBumper").val(targetVehicle.bumper);
     $('#chkVehicleJBCP').prop('checked', targetVehicle.jbcp);
     $('#chkVehicleRadio').prop('checked', targetVehicle.radio);
-    $('#dropDownVicType.dropdown').find('button').text(targetVehicle.type.name);
+    $('#dropDownVicType.dropdown').find('button').text(vehicleTypes[targetVehicle.type].name);
     //set id too
-    $('#dropDownVicType.dropdown').find('button').attr("id", vehicleTypes.indexOf(targetVehicle.type));
+    $('#dropDownVicType.dropdown').find('button').attr("id", vehicleTypes.indexOf(vehicleTypes[targetVehicle.type]));
     //same but for vehicle unit
     $('#dropDownVehicleUnit.dropdown').find('.button').text(units[targetVehicle.unit]);
     //set id too
@@ -567,13 +567,13 @@ $("#btnSubmitVehicle").click(function () {
         radio: $("#chkVehicleRadio")[0].checked,
         unit: units.indexOf($('#dropDownVehicleUnit.dropdown').find('button').text()),
         jbcp: $("#chkVehicleJBCP")[0].checked,
-        type: vehicleTypes[$('#dropDownVicType').find('.button').attr("id")]
+        type: $('#dropDownVicType').find('.button').attr("id")
     }
     if (newVehicle.bumper.length <= 0) {
         alert("Enter a valid bumper# in the bumper# field.")
         return false;
     }
-    if (newVehicle.type === undefined) {
+    if (vehicleTypes[newVehicle.type] === undefined) {
         alert("Select a valid vehicle type.")
         return false;
     }
@@ -601,7 +601,7 @@ $("#btnSubmitVehicle").click(function () {
     }
 });
 
-//clear all elements
+//clear all elements from the panel. Can be done fully or just most pertinent elements
 function cleanVehiclePanel(full = false) {
     if (full) {
         $('#dropDownVicType.dropdown').find('button').text("")
@@ -611,6 +611,7 @@ function cleanVehiclePanel(full = false) {
     $('#chkVehicleJBCP').prop('checked', false);
     $('#chkVehicleRadio').prop('checked', false);
     $("#lblVehicleEditWarning").text("");
+    $("#imgVehiclePanelPreview").css("background-image", "");
     $("#btnCancelSubmitVehicle").addClass("hidden");
     $(".vehiclePanel").removeClass("is-active");
 }
@@ -632,9 +633,9 @@ function addVehicle(newVehicle, node = null) {
 
     $(node).find(".bumper").text(newVehicle.bumper);
     try {
-        $(node).find(".type").text(newVehicle.type.name);
-        if (newVehicle.type.image !== undefined) {
-            $(node).find('.vehiclePanelImage').css("background-image", "url(" + newVehicle.type.image + ")");
+        $(node).find(".type").text(vehicleTypes[newVehicle.type].name);
+        if (vehicleTypes[newVehicle.type].image !== undefined) {
+            $(node).find('.vehiclePanelImage').css("background-image", "url(" + vehicleTypes[newVehicle.type].image + ")");
         }
     } catch (e) {
         $(node).find(".type").text("")
