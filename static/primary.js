@@ -424,6 +424,10 @@ $("#btnSubmitPerson").click(function () {
         alert("Enter a valid name in the name field.")
         return false;
     }
+    if (newPerson.unit === -1 || newPerson.unit === undefined) {
+        alert("Select a valid unit.")
+        return false;
+    }
     if (editingItem !== false) {
         personnel[editingItem] = newPerson;
         var existingNode = $("#" + editingItem + ".personItem");
@@ -433,12 +437,12 @@ $("#btnSubmitPerson").click(function () {
         //remove warning
         // $("#lblPersonEditWarning").text("");
         editingItem = false;
-        cleanPersonnelPanel();
+        cleanPersonnelPanel(true);
         return newPerson;
     } else {
         personnel.push(newPerson);
         addPerson(newPerson)
-        cleanPersonnelPanel(true);
+        cleanPersonnelPanel();
         return newPerson;
     }
 });
@@ -497,6 +501,14 @@ $("#btnSubmitVehicle").click(function () {
         alert("Enter a valid bumper# in the bumper# field.")
         return false;
     }
+    if (newVehicle.type === undefined) {
+        alert("Select a valid vehicle type.")
+        return false;
+    }
+    if (newVehicle.unit === -1 || newVehicle.unit === undefined)  {
+        alert("Select a valid unit.")
+        return false;
+    }
     if (editingItem !== false) {
         vehicles[editingItem] = newVehicle;
         var existingNode = $("#" + editingItem + ".vehiclePanel");
@@ -506,13 +518,13 @@ $("#btnSubmitVehicle").click(function () {
         //remove warning
         // $("#lblVehicleEditWarning").text("");
         editingItem = false;
-        cleanVehiclePanel();
+        cleanVehiclePanel(true);
         return newVehicle;
     } else {
         vehicles.push(newVehicle);
         addVehicle(newVehicle)
         //full cleanup
-        cleanVehiclePanel(true);
+        cleanVehiclePanel();
         return newVehicle;
     }
 });
