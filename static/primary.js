@@ -4,14 +4,17 @@ var noImage = "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEAYABgAAD/4QBoRXhpZgAATU
 
 //save js
 
-$.getScript("/static/FileSaver.js", function() {
+$.getScript("/static/FileSaver.js", function () {
 });
 
 //globals
 var units = ["1PLT"]
 var personnel = [{name: "Burch", rank: "SPC", unit: 0}];
-var vehicleTypes = [{name: "M1097", image: noImage}];
-var vehicles = [{bumper: "C200", type: vehicleTypes[0], unit: 0}];
+var vehicleTypes = [
+    {name: "M1097", image: noImage, isEquipment: false},
+    {name: "Trailer", image: noImage, isEquipment: true}];
+var vehicles = [
+    {bumper: "C200", type: vehicleTypes[0], unit: 0}];
 var editingItem = false;
 var vehicleAssignments = [];
 
@@ -151,27 +154,9 @@ function renderAssignmentsPanel() {
     node = original.cloneNode(true);
     $('#lstAssignVehicles')[0].textContent = "";
     $('#lstAssignVehicles').append(node);
-    //personnel
-    var original = $('.assignmentPersonItem.template')[0]
-    node = original.cloneNode(true);
-    $('#lstAssignPersonnel')[0].textContent = "";
-    $('#lstAssignPersonnel').append(node);
 
-    //first populate personnel
-    for (index = 0; index < personnel.length; index++) {
-        try {
-            var person = personnel[index]
-            //check if already in assignment.
-            var personInAssignments = vehicleAssignments.find(assignment => {
-                return (personnel[assignment.driver] === person || personnel[assignment.tc] === person);
-            })
-            if (!personInAssignments) {
-                addPersonItem(person)
-            }
-        } catch (e) {
-            continue;
-        }
-    }
+    //personnel
+    genPersonnelAssignmentPanel();
 
     //generate assignments
     genVehicleAssignments();
@@ -183,6 +168,62 @@ function renderAssignmentsPanel() {
     }
 }
 
+function genPersonnelAssignmentPanel() {
+//personnel
+    var original = $('.assignmentPersonItem.template')[0]
+    node = original.cloneNode(true);
+    $('#lstAssignPersonnel')[0].textContent = "";
+    $('#lstAssignPersonnel').append(node);
+
+    //first populate personnel
+    for (index = 0; index < personnel.length; index++) {
+        try {
+            var person = personnel[index]
+            //check if already in assignment.
+            var personInAssignments = vehicleAssignments.find(assignment => {
+                if (assignment !== undefined) {
+                    return (personnel[assignment.driver] === person || personnel[assignment.tc] === person);
+                }
+            })
+            if (!personInAssignments) {
+                addPersonItem(person)
+            }
+        } catch (e) {
+            continue;
+        }
+    }
+}
+
+function genEquipmentAssignmentPanel() {
+//personnel
+    var original = $('.assignmentPersonItem.template')[0]
+    node = original.cloneNode(true);
+    $('#lstAssignPersonnel')[0].textContent = "";
+    $('#lstAssignPersonnel').append(node);
+
+    //populate equipment from vehicles that have that checked
+    for (index = 0; index < vehicles.length; index++) {
+        try {
+            if (vehicles[index].type.isEquipment) {
+                var gear = vehicles[index];
+                //check if already in assignment.
+                var gearInAssignments = vehicleAssignments.find(assignment => {
+                    if (assignment !== undefined) {
+                        return (vehicles[assignment.vehicle.trailer] === gear);
+                    }
+                })
+                //if not already somewhere, pop in list
+                if (!gearInAssignments) {
+                    addGearItem(gear);
+                }
+            }
+        } catch (e) {
+            console.log(e);
+            continue;
+        }
+    }
+}
+
 function genVehicleAssignments() {
     //now go through existing vehicle assignments
     //1 remove all vehicle assignments no longer in vehicles
@@ -190,21 +231,26 @@ function genVehicleAssignments() {
     vehicleAssignments.forEach(function (item, index) {
         if (item !== undefined) {
             //not in vehicles, remove
-            if (vehicles[item.vehicle] === undefined) {
+            if (vehicles[item.vehicle] === undefined || vehicles[item.vehicle].type.isEquipment) {
                 vehicleAssignments[index] = undefined;
             }
         }
     })
     vehicles.forEach(function (item, index) {
         //make sure all vehicles have vehicleAssignment obj
+        if (item === undefined) {
+            return;
+        }
         try {
             var vehicleInAssignments = vehicleAssignments.find(assignment => {
-                return vehicles[assignment.vehicle] === item;
+                if (assignment !== undefined) {
+                    return vehicles[assignment.vehicle] === item;
+                }
             })
         } catch (e) {
             return;
         }
-        if (!vehicleInAssignments) {
+        if (!vehicleInAssignments && !item.type.isEquipment) {
             //if not in, create
             vehicleAssignments.push(
                 {
@@ -224,6 +270,9 @@ function addVehicleAssignment(index, original, location = $('#lstAssignVehicles'
     try {
         node = original.cloneNode(true);
         var assignment = vehicleAssignments[index];
+        if (assignment === undefined) {
+            return false;
+        }
         $(node).find("#enditem_bumperNumber").text(vehicles[assignment.vehicle].bumper);
         $(node).find("#enditem_type").text(vehicles[assignment.vehicle].type.name);
         $(node).find("#enditem_unit").text(units[vehicles[assignment.vehicle].unit]);
@@ -297,6 +346,7 @@ $(".toplevelnav").click(function () {
     //clean everything
     cleanPersonnelPanel();
     cleanVehiclePanel();
+    cleanAssignmentsPanel();
     editingItem = false;
     //if element is assignment, repopulate
     if (this.innerText === "Personnel") {
@@ -310,11 +360,25 @@ $(".toplevelnav").click(function () {
     }
 });
 
+//add a person object to the assignment panel
 function addPersonItem(thisperson) {
     var original = $('.assignmentPersonItem.template')[0]
     node = original.cloneNode(true);
     $(node).find(".title").text(thisperson.rank + ' ' + thisperson.name);
     $(node).attr('id', personnel.indexOf(thisperson));
+    $(node).removeClass("template");
+    $('#lstAssignPersonnel').append(node);
+    //add event handlers
+    node.addEventListener('dragstart', assignmentDragStart)
+    node.addEventListener('dragend', assignmentDragEnd)
+}
+
+//same as above but for gear
+function addGearItem(thisgear) {
+    var original = $('.assignmentPersonItem.template')[0]
+    node = original.cloneNode(true);
+    $(node).find(".title").text(thisgear.bumper);
+    $(node).attr('id', vehicles.indexOf(thisgear));
     $(node).removeClass("template");
     $('#lstAssignPersonnel').append(node);
     //add event handlers
@@ -513,7 +577,7 @@ $("#btnSubmitVehicle").click(function () {
         alert("Select a valid vehicle type.")
         return false;
     }
-    if (newVehicle.unit === -1 || newVehicle.unit === undefined)  {
+    if (newVehicle.unit === -1 || newVehicle.unit === undefined) {
         alert("Select a valid unit.")
         return false;
     }
@@ -550,6 +614,12 @@ function cleanVehiclePanel(full = false) {
     $("#btnCancelSubmitVehicle").addClass("hidden");
     $(".vehiclePanel").removeClass("is-active");
 }
+
+function cleanAssignmentsPanel() {
+    $(".tabLstAssignment").removeClass("is-active");
+    $("#tabLstAssignmentPeople").addClass("is-active");
+}
+
 
 //append a cell to lstVehicles or update the existing one if editing
 function addVehicle(newVehicle, node = null) {
@@ -691,10 +761,12 @@ $("#saveVehicleType").click(function () {
         //revert to basic image
         imageData = noImage;
     }
+    var isEquipment = $("#chkTypeTrailer")[0].checked
     vehicleTypes.push(
         {
             name: typeName,
-            image: imageData
+            image: imageData,
+            isEquipment: isEquipment
         }
     )
     //close and cleanup
@@ -708,6 +780,7 @@ function closeVehicleTypes() {
     $("#addVehicleTypePanel").removeClass("is-active");
     $("#inputVehicleTypeName").val("");
     $("#chooseTypeImage").val("");
+    $("#chkTypeTrailer").prop('checked', "");
     $("#imgVehicleTypePreview")[0].src = "";
 }
 
@@ -747,7 +820,7 @@ function allowDrop(e) {
 
 
 function assignmentDragStart(e) {
-    e.dataTransfer.setData("currentPersonID", e.target.id);
+    e.dataTransfer.setData("currentID", e.target.id);
     e.target.classList.add("dragging");
 }
 
@@ -761,25 +834,41 @@ function assignmentDropPerson(e) {
     console.log(e)
     e.preventDefault();
     e.stopPropagation();
-    var targetPersonID = e.dataTransfer.getData("currentPersonID");
+    var targetID = e.dataTransfer.getData("currentID");
     // e.target.id=targetPersonID
     var thisEndItem = vehicleAssignments[e.target.closest(".enditem_panel").id];
-    console.log(e.target);
     //do different things depending on what target is
-    var person = personnel[targetPersonID]
-    if (e.target.id === "inputDriver") {
-        thisEndItem.driver = personnel.indexOf(person);
-        e.target.innerHTML = person.rank + " " + person.name;
-        e.target.classList.add("is-success");
-        e.target.classList.remove("is-danger");
-    } else if (e.target.id === "inputTC") {
-        thisEndItem.tc = personnel.indexOf(person);
-        e.target.innerHTML = person.rank + " " + person.name;
-        e.target.classList.add("is-success");
-        e.target.classList.remove("is-danger");
+    //and type right now
+    if ($("#tabLstAssignmentPeople").hasClass("is-active")) {
+        var person = personnel[targetID]
+        if (e.target.id === "inputDriver") {
+            thisEndItem.driver = personnel.indexOf(person);
+            e.target.innerHTML = person.rank + " " + person.name;
+            e.target.classList.add("is-success");
+            e.target.classList.remove("is-danger");
+        } else if (e.target.id === "inputTC") {
+            thisEndItem.tc = personnel.indexOf(person);
+            e.target.innerHTML = person.rank + " " + person.name;
+            e.target.classList.add("is-success");
+            e.target.classList.remove("is-danger");
+        } else {
+            alert("That can't go here.")
+            return;
+        }
+    } else {
+        if (e.target.id === "inputTrailer") {
+            var gear = vehicles[targetID];
+            thisEndItem.trailer = vehicles.indexOf(gear);
+            e.target.innerHTML = gear.bumper
+            e.target.classList.add("is-success");
+            e.target.classList.remove("is-danger");
+        } else {
+            alert("That can't go here.")
+            return;
+        }
     }
     //remove from pool
-    $("#" + targetPersonID + ".assignmentPersonItem").remove();
+    $("#" + targetID + ".assignmentPersonItem").remove();
 }
 
 //on click of a dropzone occupied by a person, remove them and return from pool
@@ -787,20 +876,29 @@ function assignmentDropPerson(e) {
 $("#lstAssignVehicles").on('click', ".assignmentDropzone", function (e) {
     if (this.innerHTML === "") return;
     var thisEndItem = vehicleAssignments[e.target.closest(".enditem_panel").id];
-    var person = undefined;
-    if (this.id === "inputDriver") {
-        person = personnel[thisEndItem.driver];
-        thisEndItem.driver = undefined;
+    var evictee = undefined;
+    if ($("#tabLstAssignmentPeople").hasClass("is-active")) {
+        if (this.id === "inputDriver") {
+            evictee = personnel[thisEndItem.driver];
+            thisEndItem.driver = undefined;
+        }
+        if (this.id === "inputTC") {
+            evictee = personnel[thisEndItem.tc];
+            thisEndItem.tc = undefined;
+        }
+        addPersonItem(evictee);
     }
-    if (this.id === "inputTC") {
-        person = personnel[thisEndItem.tc];
-        thisEndItem.tc = undefined;
+    else {
+        if (this.id === "inputTrailer") {
+            evictee = vehicles[thisEndItem.trailer];
+            thisEndItem.trailer=undefined;
+        }
+        addGearItem(evictee);
     }
     this.innerHTML = "";
     this.classList.remove("is-success")
     this.classList.add("is-danger")
     //put person back in pool
-    addPersonItem(person);
 })
 
 //called when users selects an image to load in the new vehicle type modal
@@ -818,14 +916,15 @@ function selectVehicleTypeImage(e) {
 
 $(".download").click(function () {
     //serialize all items
-    var saveData={
-        units:units,
-        personnel:personnel,
-        vehicleTypes:vehicleTypes,
-        vehicles:vehicles,
-        vehicleAssignments:vehicleAssignments}
+    var saveData = {
+        units: units,
+        personnel: personnel,
+        vehicleTypes: vehicleTypes,
+        vehicles: vehicles,
+        vehicleAssignments: vehicleAssignments
+    }
     //save file
-    saveAs( new Blob([JSON.stringify(saveData)], {type: "octet/stream"}), "troopData.dat");
+    saveAs(new Blob([JSON.stringify(saveData)], {type: "octet/stream"}), "troopData.dat");
 });
 
 //get uploaded data and apply to instance
@@ -836,13 +935,26 @@ function getTroopData(e) {
     reader.onload = function () {
         //take string data, parse from json into js objects
         var totalData = JSON.parse(reader.result);
-        units=totalData["units"]
-        vehicleTypes=totalData["vehicleTypes"]
-        vehicles=totalData["vehicles"]
-        personnel=totalData["personnel"]
-        vehicleAssignments=totalData["vehicleAssignments"]
+        units = totalData["units"]
+        vehicleTypes = totalData["vehicleTypes"]
+        vehicles = totalData["vehicles"]
+        personnel = totalData["personnel"]
+        vehicleAssignments = totalData["vehicleAssignments"]
         //force
         $("#vehiclesNav").click();
     };
     reader.readAsText(e.target.files[0]);
 }
+
+$(".tabLstAssignment").click(function () {
+    $(".tabLstAssignment").removeClass("is-active");
+    $(this).addClass("is-active");
+    if (this.id === "tabLstAssignmentEquipment") {
+        //populate with equipment
+        genEquipmentAssignmentPanel();
+
+    } else if (this.id === "tabLstAssignmentPeople") {
+        //populate with people
+        genPersonnelAssignmentPanel();
+    }
+});

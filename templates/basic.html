@@ -12,47 +12,45 @@
 <body>
 <div id="render" class="container renderPage hidden">
     <div id="renderContainer" class="columns is-multiline is-centered">
-{#        <div class="column renderItem panel is-two-fifths">#}
-{#            <div class="columns">#}
-{#                <div class="column is-one-third" style="height: 80px;">#}
-{#                    picture goes here#}
-{#                </div>#}
-{#            </div>#}
-{#            <div class="columns">#}
-{#                <div class="column has-text-centered">JBCP</div>#}
-{#                <div class="column has-text-centered">Radio</div>#}
-{#                <div class="column has-text-centered">Licenses</div>#}
-{#            </div>#}
-{#            <div class="columns">#}
-{#                <div class="column ">#}
-{#                    <div><p>TC</p>  </div>#}
-{#                    <div><p>DRIVER</p></div>#}
-{#                    <div><p>TRAILER</p></div>#}
-{#                </div>#}
-{#            </div>#}
-{#        </div>#}
-{#        <div class="column renderItem panel is-two-fifths">#}
-{#            <div class="columns">#}
-{#                <div class="column is-one-third" style="height: 80px;">#}
-{#                    picture goes here#}
-{#                </div>#}
-{#            </div>#}
-{#            <div class="columns">#}
-{#                <div class="column is-one-quarter">#}
-{#                    <div>JBCP</div>#}
-{#                    <div>Radio</div>#}
-{#                    <div>Crew</div>#}
-{##}
-{#                </div>#}
-{#                <div class="column ">#}
-{#                    <div><p>TC</p></div>#}
-{#                    <div><p>DRIVER</p></div>#}
-{#                    <div><p>TRAILER</p></div>#}
-{#                </div>#}
-{#            </div>#}
-{#        </div>#}
-
-
+        {#        <div class="column renderItem panel is-two-fifths">#}
+        {#            <div class="columns">#}
+        {#                <div class="column is-one-third" style="height: 80px;">#}
+        {#                    picture goes here#}
+        {#                </div>#}
+        {#            </div>#}
+        {#            <div class="columns">#}
+        {#                <div class="column has-text-centered">JBCP</div>#}
+        {#                <div class="column has-text-centered">Radio</div>#}
+        {#                <div class="column has-text-centered">Licenses</div>#}
+        {#            </div>#}
+        {#            <div class="columns">#}
+        {#                <div class="column ">#}
+        {#                    <div><p>TC</p>  </div>#}
+        {#                    <div><p>DRIVER</p></div>#}
+        {#                    <div><p>TRAILER</p></div>#}
+        {#                </div>#}
+        {#            </div>#}
+        {#        </div>#}
+        {#        <div class="column renderItem panel is-two-fifths">#}
+        {#            <div class="columns">#}
+        {#                <div class="column is-one-third" style="height: 80px;">#}
+        {#                    picture goes here#}
+        {#                </div>#}
+        {#            </div>#}
+        {#            <div class="columns">#}
+        {#                <div class="column is-one-quarter">#}
+        {#                    <div>JBCP</div>#}
+        {#                    <div>Radio</div>#}
+        {#                    <div>Crew</div>#}
+        {##}
+        {#                </div>#}
+        {#                <div class="column ">#}
+        {#                    <div><p>TC</p></div>#}
+        {#                    <div><p>DRIVER</p></div>#}
+        {#                    <div><p>TRAILER</p></div>#}
+        {#                </div>#}
+        {#            </div>#}
+        {#        </div>#}
 
 
     </div>
@@ -68,25 +66,32 @@
         <div class="container" style="">
             <div class="columns is-fullheight">
                 <div class="column is-one-fifth" style="position: fixed;">
-                    <button id="personnelNav" class="toplevelnav mb-2 button is-large is-primary is-fullwidth">Personnel</button>
-                    <button id="vehiclesNav" class="toplevelnav mb-2 button is-large is-primary is-fullwidth">Vehicles</button>
-                    <button id="assignmentsNav" class="toplevelnav mb-2 button is-large is-primary is-fullwidth">Assignment</button>
+                    <button id="personnelNav" class="toplevelnav mb-2 button is-large is-primary is-fullwidth">
+                        Personnel
+                    </button>
+                    <button id="vehiclesNav" class="toplevelnav mb-2 button is-large is-primary is-fullwidth">Vehicles
+                    </button>
+                    <button id="assignmentsNav" class="toplevelnav mb-2 button is-large is-primary is-fullwidth">
+                        Assignment
+                    </button>
                     <div class="block"></div>
                     <div class="columns mr-1 mt-4 ml-1 is-multiline is-centered">
                         <div class="column mb-2 is-two-fifths">
                             <label class="upload button" for="uploadData" style="display: block"></label>
-                            <input type="file"  name="file" id="uploadData" class="inputfile" />
+                            <input type="file" name="file" id="uploadData" class="inputfile"/>
                         </div>
                         <div class="column mb-2 is-two-fifths ">
                             <label class="download button" style="display: block"></label>
                         </div>
-                        <div id="btnGenReport" class="column button mb-2 is-large is-primary is-fullwidth">Generate Report</div>
+                        <div id="btnGenReport" class="column button mb-2 is-large is-primary is-fullwidth">Generate
+                            Report
+                        </div>
 
                     </div>
                 </div>
                 <div class="column"></div>
                 <div class="column  is-two-thirds">
-                    <div id="Personnel" class="appPanel container panel hidden" >
+                    <div id="Personnel" class="appPanel container panel hidden">
                         <div id="lblPersonEditWarning" class="has-text-centered edit-warning" style="width: 60%"></div>
                         <div class="columns">
                             <div class="column is-three-fifths m-5 mr-3" style="">
@@ -112,10 +117,11 @@
                                         </div>
                                     </div>
                                 </div>
-                            Unit:
+                                Unit:
                                 <div class="dropdown m-2" style="margin-right:0 !important;" id="dropDownUnit">
                                     <div class="dropdown-trigger">
-                                        <button class="button" style="width: 80px;" aria-haspopup="true" aria-controls="dropDownUnit">
+                                        <button class="button" style="width: 80px;" aria-haspopup="true"
+                                                aria-controls="dropDownUnit">
                                             <span id="content"></span>
                                             <i class="fas fa-angle-down" aria-hidden="true"></i>
                                             </span>
@@ -127,7 +133,7 @@
                                     </div>
                                 </div>
                                 <div id="addUnit" class="button m-2 is-link" style="margin-left:0 !important;">+</div>
-<div id="addUnitPanel" class="modal">
+                                <div id="addUnitPanel" class="modal">
                                     <div class="modal-background"></div>
                                     <div class="modal-card">
                                         <header class="modal-card-head">
@@ -136,7 +142,8 @@
                                         </header>
                                         <section class="modal-card-body">
                                             Unit
-                                            <input class="input m-2 " type="text" style="width: 200px" id="inputUnitName"
+                                            <input class="input m-2 " type="text" style="width: 200px"
+                                                   id="inputUnitName"
                                                    placeholder="Name">
 
                                         </section>
@@ -153,8 +160,12 @@
                                 <div class="block"></div>
                                 <div class="columns is-centered">
                                     <div class="column has-text-centered">
-                                        <button class="button align is-centered is-success" id="btnSubmitPerson">Submit</button>
-                                        <button class="button align is-centered is-warning hidden" id="btnCancelSubmitPerson">Cancel</button>
+                                        <button class="button align is-centered is-success" id="btnSubmitPerson">
+                                            Submit
+                                        </button>
+                                        <button class="button align is-centered is-warning hidden"
+                                                id="btnCancelSubmitPerson">Cancel
+                                        </button>
                                     </div>
                                 </div>
 
@@ -162,7 +173,9 @@
                             <div class="column" style="border-left: 1px solid gray; height: 400px; overflow-y: scroll;">
                                 <div id="lstPersonnel" class="column listview_parent">
                                     <div class="listview_item personItem template">
-                                        <div id="removePerson" style="float: right"><button class="delete"></button></div>
+                                        <div id="removePerson" style="float: right">
+                                            <button class="delete"></button>
+                                        </div>
                                         <p class="title">SPC Macintosh</p>
                                         <p class="unit">1PLT</p></div>
 
@@ -180,7 +193,8 @@
                                 Unit:
                                 <div class="dropdown m-2" id="dropDownVehicleUnit" style="margin-right: 0 !important">
                                     <div class="dropdown-trigger">
-                                        <button class="button" style="width: 80px;" aria-haspopup="true" aria-controls="dropDownVehicleUnit">
+                                        <button class="button" style="width: 80px;" aria-haspopup="true"
+                                                aria-controls="dropDownVehicleUnit">
                                             <span id="content"></span>
                                             <i class="fas fa-angle-down" aria-hidden="true"></i>
                                             </span>
@@ -191,7 +205,8 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div id="addVehicleUnit" class="button m-2 is-link" style="margin-left:0 !important">+</div>
+                                <div id="addVehicleUnit" class="button m-2 is-link" style="margin-left:0 !important">+
+                                </div>
                                 <div id="addVehicleUnitPanel" class="modal">
                                     <div class="modal-background"></div>
                                     <div class="modal-card">
@@ -201,7 +216,8 @@
                                         </header>
                                         <section class="modal-card-body">
                                             Unit
-                                            <input class="input m-2 " type="text" style="width: 200px" id="inputVehicleUnitName"
+                                            <input class="input m-2 " type="text" style="width: 200px"
+                                                   id="inputVehicleUnitName"
                                                    placeholder="Name">
 
                                         </section>
@@ -222,8 +238,12 @@
                                 <div class="block"></div>
                                 <div class="columns is-centered">
                                     <div class="column has-text-centered">
-                                        <button class="button align is-centered is-success" id="btnSubmitVehicle">Submit</button>
-                                        <button class="button align is-centered is-warning hidden" id="btnCancelSubmitVehicle">Cancel</button>
+                                        <button class="button align is-centered is-success" id="btnSubmitVehicle">
+                                            Submit
+                                        </button>
+                                        <button class="button align is-centered is-warning hidden"
+                                                id="btnCancelSubmitVehicle">Cancel
+                                        </button>
                                     </div>
                                 </div>
                             </div>
@@ -232,7 +252,8 @@
                                 <p>Type:</p>
                                 <div class="dropdown m-2" id="dropDownVicType" style="margin-right: 0 !important">
                                     <div class="dropdown-trigger">
-                                        <button class="button" aria-haspopup="true" style="width: 80px;" aria-controls="dropDownVicType">
+                                        <button class="button" aria-haspopup="true" style="width: 80px;"
+                                                aria-controls="dropDownVicType">
                                             <span id="content"></span>
                                             <i class="fas fa-angle-down" aria-hidden="true"></i>
                                             </span>
@@ -243,7 +264,9 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div id="addVehicleType" style="margin-left: 0 !important" class="button m-2 is-link">+</div>
+                                <div id="addVehicleType" style="margin-left: 0 !important" class="button m-2 is-link">
+                                    +
+                                </div>
                                 <div id="imgVehiclePanelPreview"></div>
                                 <div id="addVehicleTypePanel" class="modal">
                                     <div class="modal-background"></div>
@@ -265,7 +288,10 @@
                                                 <div class="column">
                                                     <input id="chooseTypeImage" style="overflow: hidden; width: 180px"
                                                            type="file" accept="image/*">
-
+                                                    <label class="checkbox m-2">
+                                                        <input type="checkbox" id="chkTypeTrailer">
+                                                        is Trailer/Equipment (no crew)
+                                                    </label>
                                                 </div>
                                             </div>
 
@@ -287,7 +313,9 @@
                                     <div class="column vehiclePanelImage">
                                     </div>
                                     <div style="float:right" class="column has-text-centered">
-                                        <div style="float:right"><button id="removeVehicle" class="delete"></button></div>
+                                        <div style="float:right">
+                                            <button id="removeVehicle" class="delete"></button>
+                                        </div>
                                         <p class="bumper">C200</p>
                                         <p class="type">M1097</p>
                                         <p class="unit">1PLT</p>
@@ -311,9 +339,11 @@
                                                 </p>
                                             </div>
                                             <div class="column">
-                                                <div class="assignmentProperty is-light is-danger radioProperty">Radio</div>
-                                                <div class="assignmentProperty is-light is-danger jbcpProperty">JBCP</div>
-{#                                                <div class="assignmentProperty is-light is-danger">asf</div>#}
+                                                <div class="assignmentProperty is-light is-danger radioProperty">Radio
+                                                </div>
+                                                <div class="assignmentProperty is-light is-danger jbcpProperty">JBCP
+                                                </div>
+                                                {#                                                <div class="assignmentProperty is-light is-danger">asf</div>#}
                                             </div>
                                         </div>
                                     </div>
@@ -337,7 +367,7 @@
                                                 </div>
                                                 <div class="column is-one-third">
                                                     <div id="inputTrailer"
-                                                         class="assignmentDropzone button is-fullwidth"></div>
+                                                         class="assignmentDropzone is-light button is-fullwidth"></div>
                                                 </div>
                                             </div>
                                         </div>
@@ -347,11 +377,30 @@
                             </div>
                             <div class="column"></div>
                             <div class="column is-one-quarter">
-                                <div id="lstAssignPersonnel" class="column panel"
-                                     style="overflow-y: scroll; position:fixed; height: 400px; width:20%;">
-                                    <div class="assignmentPersonItem listview_item template"
-                                         draggable="true">
-                                        <p class="title">placeholder</p>
+                                <div style="position:fixed;width:20%;">
+                                    <div>
+                                        <div class="tabs is-boxed">
+                                            <ul>
+                                                <li id="tabLstAssignmentPeople" class="tabLstAssignment is-active">
+                                                    <a>
+                                                        <span>People</span>
+                                                    </a>
+                                                </li>
+                                                <li id="tabLstAssignmentEquipment" class="tabLstAssignment">
+                                                    <a>
+                                                        <span>Equipment</span>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
+
+                                    </div>
+                                    <div id="lstAssignPersonnel" class="column panel"
+                                         style="overflow-y: scroll;  height: 400px; ">
+                                        <div class="assignmentPersonItem listview_item template"
+                                             draggable="true">
+                                            <p class="title">placeholder</p>
+                                        </div>
                                     </div>
                                 </div>
                                 <div id="lstAssignFilters" class="column panel " style="display: none; height:120px">
