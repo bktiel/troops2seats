@@ -181,6 +181,12 @@ div.vehiclePanel .bumper {
     width: 210mm;
     height: 297mm;
   }
+    #main {
+        display: none;
+    }
+    #render {
+        display: inherit;
+    }
     #renderContainer {
         width: 256mm;
     }
