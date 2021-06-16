@@ -110,8 +110,8 @@ div.vehiclePanel .bumper {
 }
 
 .upload {
-        background-color: #F6BD60;
-
+    background-color: #F6BD60;
+    height: 100%;
     background-image: url("/static/images/upload.png");
     background-size: contain;
     background-repeat: no-repeat;
@@ -217,4 +217,13 @@ div.vehiclePanel .bumper {
 }
 }
 
-
+/* for hidden file input  http://tympanus.net/codrops/2015/09/15/styling-customizing-file-inputs-smart-way/
+*/
+.inputfile {
+	width: 0.1px;
+	height: 0.1px;
+	opacity: 0;
+	overflow: hidden;
+	position: absolute;
+	z-index: -1;
+}

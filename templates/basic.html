@@ -68,13 +68,18 @@
         <div class="container" style="">
             <div class="columns is-fullheight">
                 <div class="column is-one-fifth" style="position: fixed;">
-                    <button class="toplevelnav mb-2 button is-large is-primary is-fullwidth">Personnel</button>
-                    <button class="toplevelnav mb-2 button is-large is-primary is-fullwidth">Vehicles</button>
-                    <button class="toplevelnav mb-2 button is-large is-primary is-fullwidth">Assignment</button>
+                    <button id="personnelNav" class="toplevelnav mb-2 button is-large is-primary is-fullwidth">Personnel</button>
+                    <button id="vehiclesNav" class="toplevelnav mb-2 button is-large is-primary is-fullwidth">Vehicles</button>
+                    <button id="assignmentsNav" class="toplevelnav mb-2 button is-large is-primary is-fullwidth">Assignment</button>
                     <div class="block"></div>
                     <div class="columns mr-1 mt-4 ml-1 is-multiline is-centered">
-                        <div class="column button mb-2 is-large is-two-fifths upload"></div>
-                        <div class="column button mb-2 is-large is-two-fifths download"></div>
+                        <div class="column mb-2 is-two-fifths">
+                            <label class="upload button" for="uploadData" style="display: block"></label>
+                            <input type="file"  name="file" id="uploadData" class="inputfile" />
+                        </div>
+                        <div class="column mb-2 is-two-fifths ">
+                            <label class="download button" style="display: block"></label>
+                        </div>
                         <div id="btnGenReport" class="column button mb-2 is-large is-primary is-fullwidth">Generate Report</div>
 
                     </div>
