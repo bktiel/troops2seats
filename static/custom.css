@@ -10,12 +10,14 @@
     border-bottom-left-radius: 5px;
     cursor: pointer;
 }
+
 .listview_item:hover {
     background-color: #96C5F7;
 }
-.listview_item:active {
-    background-color: #00b89c;
-}
+
+/*.listview_item:active {*/
+/*    background-color: #00b89c;*/
+/*}*/
 
 .personItem.is-active {
     background-color: #00b89c;
@@ -33,7 +35,6 @@
 .appPanel {
 
 }
-
 
 
 .vehiclePanel {
@@ -101,4 +102,21 @@ div.vehiclePanel .bumper {
 
 .dropdown-item > .delete {
     float: right;
+}
+
+.upload {
+        background-color: #F6BD60;
+
+    background-image: url("/static/images/upload.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.download {
+        background-color: #3273dc;
+    background-image: url("/static/images/download.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
 }
