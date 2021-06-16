@@ -10,12 +10,58 @@
 
 </head>
 <body>
-<div class="container is-fullheight is-fullwidth">
+<div id="render" class="container renderPage hidden">
+    <div class="columns is-multiline is-centered">
+        <div class="column renderItem panel is-two-fifths">
+            <div class="columns">
+                <div class="column is-one-third" style="height: 80px;">
+                    picture goes here
+                </div>
+            </div>
+            <div class="columns">
+                <div class="column has-text-centered">JBCP</div>
+                <div class="column has-text-centered">Radio</div>
+                <div class="column has-text-centered">Licenses</div>
+            </div>
+            <div class="columns">
+                <div class="column ">
+                    <div><p>TC</p>  </div>
+                    <div><p>DRIVER</p></div>
+                    <div><p>TRAILER</p></div>
+                </div>
+            </div>
+        </div>
+        <div class="column renderItem panel is-two-fifths">
+            <div class="columns">
+                <div class="column is-one-third" style="height: 80px;">
+                    picture goes here
+                </div>
+            </div>
+            <div class="columns">
+                <div class="column is-one-quarter">
+                    <div>JBCP</div>
+                    <div>Radio</div>
+                    <div>Crew</div>
+
+                </div>
+                <div class="column ">
+                    <div><p>TC</p></div>
+                    <div><p>DRIVER</p></div>
+                    <div><p>TRAILER</p></div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+    </div>
+</div>
+<div id="main" class="container is-fullheight is-fullwidth">
     <section class="section is-bordered">
         <nav class="level">
             <p class="level-item has-text-centered">
             </p>
-
         </nav>
     </section>
     <section class="section" style="">
@@ -29,7 +75,7 @@
                     <div class="columns mr-1 mt-4 ml-1 is-multiline is-centered">
                         <div class="column button mb-2 is-large is-two-fifths upload"></div>
                         <div class="column button mb-2 is-large is-two-fifths download"></div>
-                        <div class="column button mb-2 is-large is-primary is-fullwidth">Generate Report</div>
+                        <div id="btnGenReport" class="column button mb-2 is-large is-primary is-fullwidth">Generate Report</div>
 
                     </div>
                 </div>
@@ -217,10 +263,15 @@
                                 <div class="enditem_panel panel template">
                                     <div>
                                         <div class="columns pr-4 pl-4 mb-0">
-                                            <div class="is-two-fifths column"></div>
+                                            <div class="is-two-fifths column enditem_vehiclePreview"></div>
                                             <div class="is-one-third column has-text-centered">
                                                 <p id="enditem_bumperNumber"
                                                    style="font-size: larger; font-weight: bold">C200</p>
+                                            </div>
+                                            <div class="column">
+                                                <div class="assignmentProperty is-light is-danger radioProperty">Radio</div>
+                                                <div class="assignmentProperty is-light is-danger jbcpProperty">JBCP</div>
+{#                                                <div class="assignmentProperty is-light is-danger">asf</div>#}
                                             </div>
                                         </div>
                                     </div>

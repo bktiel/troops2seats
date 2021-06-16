@@ -6605,9 +6605,9 @@ a.navbar-item:focus, a.navbar-item:focus-within, a.navbar-item:hover, a.navbar-i
   font-size: 1rem;
 }
 
-.panel:not(:last-child) {
-  margin-bottom: 1.5rem;
-}
+/*.panel:not(:last-child) {*/
+/*  margin-bottom: 1.5rem;*/
+/*}*/
 
 .panel.is-white .panel-heading {
   background-color: white;
