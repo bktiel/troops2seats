@@ -5,7 +5,7 @@ var noImage = "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEAYABgAAD/4QBoRXhpZgAATU
 var units = ["1PLT"]
 var personnel = [{ name: "Burch", rank: "SPC", unit: 0}];
 var vehicleTypes = [{name: "M1097", image: noImage}];
-var vehicles = [{bumper: "C200", type: vehicleTypes[0]}];
+var vehicles = [{bumper: "C200", type: vehicleTypes[0],unit: 0}];
 var editingItem = false;
 var vehicleAssignments = [];
 
@@ -38,6 +38,7 @@ $(".dropdownRankItem").click(function () {
 $("#btnGenReport").click(function () {
     $("#main").toggle();
     $("#render").toggle();
+    genVehicleAssignments();
     for (index = 0; index < vehicleAssignments.length; index++) {
         addVehicleAssignment(index,$('.enditem_panel.template')[0],$("#renderContainer")[0])
     }
@@ -65,11 +66,25 @@ function renderPersonnelPanel() {
 }
 
 function clearUnitsDropdown() {
+    //clear existing selection
+    $('#dropDownUnit.dropdown').find('.button').text("");
     var dropdown = $("#dropDownUnit").find(".dropdown-content")[0];
     dropdown.innerHTML = "";
     units.forEach(function (item, index) {
         if (item !== undefined) {
             dropdown.innerHTML += ("<div class='dropdown-item unitItem' id=\'" + index + "\'>" + item + "<button class=\"removeUnit delete is-small\"></button> </div> \n");
+        }
+    });
+}
+
+function clearVehicleUnitsDropdown() {
+    //clear existing selection
+    $('#dropDownVehicleUnit.dropdown').find('.button').text("");
+    var dropdown = $("#dropDownVehicleUnit").find(".dropdown-content")[0];
+    dropdown.innerHTML = "";
+    units.forEach(function (item, index) {
+        if (item !== undefined) {
+            dropdown.innerHTML += ("<div class='dropdown-item vehicleUnitItem' id=\'" + index + "\'>" + item + "<button class=\"removeVehicleUnit delete is-small\"></button> </div> \n");
         }
     });
 }
@@ -90,6 +105,8 @@ function renderVehiclePanel() {
     })
     //clear and readd vehicle type
     clearVehicleTypesDropdown();
+    //clear and readd units
+    clearVehicleUnitsDropdown();
     //clear deleter
     $("#removeVehicleType").addClass("hidden");
     //clean up editing warnings
@@ -149,6 +166,18 @@ function renderAssignmentsPanel() {
             continue;
         }
     }
+
+    //generate assignments
+    genVehicleAssignments();
+
+    //now write to page
+    var original = $('.enditem_panel.template')[0]
+    for (index = 0; index < vehicleAssignments.length; index++) {
+        addVehicleAssignment(index,original)
+    }
+}
+
+function genVehicleAssignments() {
     //now go through existing vehicle assignments
     //1 remove all vehicle assignments no longer in vehicles
     //2 add all vehicle assignments not in vehicles
@@ -183,11 +212,6 @@ function renderAssignmentsPanel() {
             )
         }
     })
-    //now write to page
-    var original = $('.enditem_panel.template')[0]
-    for (index = 0; index < vehicleAssignments.length; index++) {
-        addVehicleAssignment(index,original)
-    }
 }
 
 //add vehicle assignment to page
@@ -196,6 +220,9 @@ function addVehicleAssignment(index,original,location=$('#lstAssignVehicles')) {
             node = original.cloneNode(true);
             var assignment = vehicleAssignments[index];
             $(node).find("#enditem_bumperNumber").text(vehicles[assignment.vehicle].bumper);
+            $(node).find("#enditem_type").text(vehicles[assignment.vehicle].type.name);
+            $(node).find("#enditem_unit").text(vehicles[assignment.vehicle].unit);
+
             //if no TC or driver, leave empty and coat red
             var driverElement = $(node).find("#inputDriver");
             var tcElement = $(node).find("#inputTC");
@@ -226,7 +253,6 @@ function addVehicleAssignment(index,original,location=$('#lstAssignVehicles')) {
                 $(node).find(".enditem_vehiclePreview").css("background-image", "url(" + vehicles[assignment.vehicle].type.image + ")");
             }
             catch (e) {
-
             }
             //set indicators
             if(vehicles[assignment.vehicle].radio) {
@@ -319,6 +345,10 @@ $("#lstVehicles").on('click', ".vehiclePanel", function (e) {
     $('#dropDownVicType.dropdown').find('button').text(targetVehicle.type.name);
     //set id too
     $('#dropDownVicType.dropdown').find('button').attr("id",vehicleTypes.indexOf(targetVehicle.type));
+    //same but for vehicle unit
+    $('#dropDownVehicleUnit.dropdown').find('.button').text(units[targetVehicle.unit]);
+    //set id too
+    $('#dropDownVehicleUnit.dropdown').find('.button').attr("id",units.indexOf(targetVehicle.unit));
     e.preventDefault();
 });
 
@@ -421,7 +451,7 @@ function cleanPersonnelPanel() {
     $("#inputPersonName").val("")
     $('#dropDownRank.dropdown').find('#content').text("")
     $('#chkPersonLicense').prop('checked', false);
-    $('#dropDownUnit.dropdown').find('#content').text("")
+    $('#dropDownUnit.dropdown').find('.button').text("")
     $("#lblPersonEditWarning").text("");
     $("#btnCancelSubmitPerson").addClass("hidden");
     $(".personItem").removeClass("is-active");
@@ -460,7 +490,7 @@ $("#btnSubmitVehicle").click(function () {
     var newVehicle = {
         bumper: $("#inputVehicleBumper").val(),
         radio: $("#chkVehicleRadio")[0].checked,
-        unit: "",
+        unit: units.indexOf($('#dropDownVehicleUnit.dropdown').find('button').text()),
         jbcp: $("#chkVehicleJBCP")[0].checked,
         type: vehicleTypes[$('#dropDownVicType').find('.button').attr("id")]
     }
@@ -491,6 +521,7 @@ $("#btnSubmitVehicle").click(function () {
 function cleanVehiclePanel() {
     $("#inputVehicleBumper").val("")
     $('#dropDownVicType.dropdown').find('button').text("")
+    $('#dropDownVehicleUnit.dropdown').find('.button').text("")
     $('#chkVehicleJBCP').prop('checked', false);
     $('#chkVehicleRadio').prop('checked', false);
     $("#lblVehicleEditWarning").text("");
@@ -526,11 +557,9 @@ function addVehicle(newVehicle, node = null) {
 $("#addUnit").click(function () {
     $("#addUnitPanel").addClass("is-active");
 })
-
 $(".cancelUnit").click(function () {
     closeCreateUnit();
 })
-
 // save from modal to units array
 $("#saveUnit").click(function () {
     var unitName = $("#inputUnitName").val();
@@ -543,12 +572,37 @@ $("#saveUnit").click(function () {
     //close and cleanup
     closeCreateUnit();
     //refresh vehicle types on main by recalling render
-    renderPersonnelPanel();
+    clearUnitsDropdown();
 })
-
 function closeCreateUnit() {
     $("#addUnitPanel").removeClass("is-active");
     $("#inputUnitName").val("");
+}
+
+//vehicle unit handlers
+$("#addVehicleUnit").click(function () {
+    $("#addVehicleUnitPanel").addClass("is-active");
+})
+$(".cancelUnit").click(function () {
+    closeCreateVehicleUnit();
+})
+// save from modal to units array
+$("#saveVehicleUnit").click(function () {
+    var unitName = $("#inputVehicleUnitName").val();
+    if (unitName.length <= 0) {
+        alert("Enter a valid unit name.");
+        return;
+    }
+    units.push(unitName
+    );
+    //close and cleanup
+    closeCreateVehicleUnit();
+    //refresh vehicle types on main by recalling render
+    clearVehicleUnitsDropdown();
+})
+function closeCreateVehicleUnit() {
+    $("#addVehicleUnitPanel").removeClass("is-active");
+    $("#inputVehicleUnitName").val("");
 }
 
 //handle when click unit from the unit dropdown on personnel panel
@@ -561,9 +615,32 @@ $(".dropdown-content").on('click', ".unitItem", function (e) {
 //handle when try to delete unit from dropdown-content
 $(".dropdown-content").on('click', ".removeUnit", function (e) {
     var targetType = e.target.closest(".unitItem");
-    units[targetType.id] = undefined;
+    try {
+            units[targetType.id] = undefined;
+    }
+    catch (e) {}
     clearUnitsDropdown();
-    renderPersonnelPanel();
+    // renderPersonnelPanel();
+});
+
+//same but for vehicle unit
+//handle when click unit from the unit dropdown on personnel panel
+$(".dropdown-content").on('click', ".vehicleUnitItem", function (e) {
+    var targetButton = $("#dropDownVehicleUnit").find(".button");
+    if (units[this.id] === undefined) return;
+    targetButton.text(units[this.id])
+    targetButton.attr("id", this.id)
+});
+//handle when try to delete unit from dropdown-content
+$(".dropdown-content").on('click', ".removeVehicleUnit", function (e) {
+    var targetType = e.target.closest(".vehicleUnitItem");
+    try {
+            units[targetType.id] = undefined;
+    }
+    catch (e) {
+    }
+    clearVehicleUnitsDropdown();
+    // renderVehiclePanel();
 });
 
 //vehicletype handlers
@@ -597,7 +674,7 @@ $("#saveVehicleType").click(function () {
     //close and cleanup
     closeVehicleTypes();
     //refresh vehicle types on main by recalling render
-    renderVehiclePanel();
+    clearVehicleTypesDropdown();
 })
 
 //clears vehicletype creation modal for re-use

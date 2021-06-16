@@ -11,7 +11,7 @@
 </head>
 <body>
 <div id="render" class="container renderPage hidden">
-    <div id="renderContainer" class="columns is-multiline ">
+    <div id="renderContainer" class="columns is-multiline is-centered">
 {#        <div class="column renderItem panel is-two-fifths">#}
 {#            <div class="columns">#}
 {#                <div class="column is-one-third" style="height: 80px;">#}
@@ -108,7 +108,7 @@
                                     </div>
                                 </div>
                             Unit:
-                                <div class="dropdown m-2" id="dropDownUnit">
+                                <div class="dropdown m-2" style="margin-right:0 !important;" id="dropDownUnit">
                                     <div class="dropdown-trigger">
                                         <button class="button" style="width: 80px;" aria-haspopup="true" aria-controls="dropDownUnit">
                                             <span id="content"></span>
@@ -121,7 +121,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div id="addUnit" class="button m-2 is-link">+</div>
+                                <div id="addUnit" class="button m-2 is-link" style="margin-left:0 !important;">+</div>
 <div id="addUnitPanel" class="modal">
                                     <div class="modal-background"></div>
                                     <div class="modal-card">
@@ -131,7 +131,7 @@
                                         </header>
                                         <section class="modal-card-body">
                                             Unit
-                                            <input class="input m-2" type="text" id="inputUnitName"
+                                            <input class="input m-2 " type="text" style="width: 200px" id="inputUnitName"
                                                    placeholder="Name">
 
                                         </section>
@@ -172,6 +172,40 @@
                             <div class="column is-three-fifths m-5 mr-3">
                                 Bumper #:
                                 <input id="inputVehicleBumper" class="input m-2" type="text" placeholder="Text input">
+                                Unit:
+                                <div class="dropdown m-2" id="dropDownVehicleUnit" style="margin-right: 0 !important">
+                                    <div class="dropdown-trigger">
+                                        <button class="button" style="width: 80px;" aria-haspopup="true" aria-controls="dropDownVehicleUnit">
+                                            <span id="content"></span>
+                                            <i class="fas fa-angle-down" aria-hidden="true"></i>
+                                            </span>
+                                        </button>
+                                    </div>
+                                    <div class="dropdown-menu" id="dropDownVehicleUnit" role="menu">
+                                        <div class="dropdown-content">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="addVehicleUnit" class="button m-2 is-link" style="margin-left:0 !important">+</div>
+                                <div id="addVehicleUnitPanel" class="modal">
+                                    <div class="modal-background"></div>
+                                    <div class="modal-card">
+                                        <header class="modal-card-head">
+                                            <p class="modal-card-title">Add Unit Type</p>
+                                            <button class="cancelUnit delete" aria-label="close"></button>
+                                        </header>
+                                        <section class="modal-card-body">
+                                            Unit
+                                            <input class="input m-2 " type="text" style="width: 200px" id="inputVehicleUnitName"
+                                                   placeholder="Name">
+
+                                        </section>
+                                        <footer class="modal-card-foot">
+                                            <button id="saveVehicleUnit" class="button is-success">Save</button>
+                                            <button class="cancelUnit button">Cancel</button>
+                                        </footer>
+                                    </div>
+                                </div>
                                 <label class="checkbox m-2">
                                     <input id="chkVehicleRadio" type="checkbox">
                                     Radio
@@ -191,7 +225,7 @@
                             <div class="column">
                                 <div class="block"></div>
                                 <p>Type:</p>
-                                <div class="dropdown m-2" id="dropDownVicType">
+                                <div class="dropdown m-2" id="dropDownVicType" style="margin-right: 0 !important">
                                     <div class="dropdown-trigger">
                                         <button class="button" aria-haspopup="true" style="width: 80px;" aria-controls="dropDownVicType">
                                             <span id="content"></span>
@@ -204,7 +238,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div id="addVehicleType" class="button m-2 is-link">+</div>
+                                <div id="addVehicleType" style="margin-left: 0 !important" class="button m-2 is-link">+</div>
                                 <div id="imgVehiclePanelPreview"></div>
                                 <div id="addVehicleTypePanel" class="modal">
                                     <div class="modal-background"></div>
@@ -267,6 +301,9 @@
                                             <div class="is-one-third column has-text-centered">
                                                 <p id="enditem_bumperNumber"
                                                    style="font-size: larger; font-weight: bold">C200</p>
+                                                <p id="enditem_type">
+                                                <p id="enditem_unit">
+                                                </p>
                                             </div>
                                             <div class="column">
                                                 <div class="assignmentProperty is-light is-danger radioProperty">Radio</div>
