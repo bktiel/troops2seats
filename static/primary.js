@@ -9,7 +9,7 @@ $.getScript("/static/FileSaver.js", function () {
 
 //globals
 var units = ["1PLT"]
-var personnel = [{name: "Burch", rank: "SPC", unit: 0}];
+var personnel = [{name: "Burch", rank: "PVT", unit: 0}];
 var vehicleTypes = [
     {name: "M1097", image: noImage, isEquipment: false},
     {name: "Trailer", image: noImage, isEquipment: true}];
@@ -18,15 +18,24 @@ var vehicles = [
 var editingItem = false;
 var vehicleAssignments = [];
 
+
 window.onload = function () {
     //first panel loaded should go here
     renderVehiclePanel();
-
+    if (document.cookie.split(';').some((item) => item.trim().startsWith('startupWarning='))) {
+    } else {
+        $("#modalAppStart").addClass("is-active");
+        document.cookie = "startupWarning=true;"
+    }
     //set up event listener for image upload
     $("#chooseTypeImage")[0].addEventListener("change", selectVehicleTypeImage)
     $("#uploadData")[0].addEventListener("change", getTroopData)
 
 }
+
+$(".btnAcceptStartup").click(function () {
+    $("#modalAppStart").removeClass("is-active");
+})
 
 $(".dropdown").click(function () {
     // var selector='#'+this.id+'.dropdown-menu';
@@ -53,6 +62,17 @@ $("#btnGenReport").click(function () {
     console.log(vehicleAssignments)
     for (index = 0; index < vehicleAssignments.length; index++) {
         addVehicleAssignment(index, $('.enditem_panel.template')[0], $("#renderContainer")[0])
+    }
+
+    //tell user about printing
+    if (document.cookie.split(';').some((item) => item.trim().startsWith('printWarning='))) {
+        //do nothing if this exists
+    }
+    else
+    {
+        document.cookie="printWarning=true";
+
+        alert("Select Save to PDF to save a digital copy. Or print it. It's your life.")
     }
     window.print();
 })
@@ -888,11 +908,10 @@ $("#lstAssignVehicles").on('click', ".assignmentDropzone", function (e) {
             thisEndItem.tc = undefined;
         }
         addPersonItem(evictee);
-    }
-    else {
+    } else {
         if (this.id === "inputTrailer") {
             evictee = vehicles[thisEndItem.trailer];
-            thisEndItem.trailer=undefined;
+            thisEndItem.trailer = undefined;
         }
         addGearItem(evictee);
     }

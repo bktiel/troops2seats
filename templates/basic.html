@@ -10,6 +10,21 @@
 
 </head>
 <body>
+<div class="modal" id="modalAppStart">
+  <div class="modal-background"></div>
+  <div class="modal-card">
+    <header class="modal-card-head">
+      <p class="modal-card-title">Before you begin..</p>
+      <button class="btnAcceptStartup delete" aria-label="close"></button>
+    </header>
+    <section class="modal-card-body">
+            All activity in this app happens on your computer. Remember to SAVE (blue button on the left) because what you put in isn't saved on the server for security reasons. You can re-upload the savefile later using the yellow button to restore your work.
+    </section>
+    <footer class="modal-card-foot">
+      <button class="btnAcceptStartup button is-success">Okay</button>
+    </footer>
+  </div>
+</div>
 <div id="render" class="container renderPage hidden">
     <div id="renderContainer" class="columns is-multiline is-centered">
         {#        <div class="column renderItem panel is-two-fifths">#}
