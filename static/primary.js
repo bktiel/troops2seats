@@ -1024,3 +1024,36 @@ $(".tabLstAssignment").click(function () {
         genPersonnelAssignmentPanel();
     }
 });
+
+//every time key pressed in, cull items in list
+var searchRestore="";
+function searchAssignables() {
+    //get input
+    let input=$("#inputAssignableSearch").val().toLowerCase();
+    if(input==="") {
+        //if empty, reset
+        $(".assignmentPersonItem").removeClass("hidden");
+        $("#btnClearAssignSearch").addClass("hidden");
+        return;
+    }
+    $("#btnClearAssignSearch").removeClass("hidden");
+    //get all items currently inside
+    let assignables=$(".assignmentPersonItem");
+    //hide all
+    $(".assignmentPersonItem").addClass("hidden");
+    //only viewable if meet criteria
+    for(var index=1; index<assignables.length; index++) {
+        let thisAssignable=assignables[index];
+        //check title object text, if match, make show
+        if(thisAssignable.querySelector(".title").innerText.toLowerCase().includes(input)){
+            thisAssignable.classList.remove("hidden");
+        }
+    }
+}
+
+//handle clicks on the button that appears as users perform search
+$("#btnClearAssignSearch").click( function() {
+    $("#inputAssignableSearch").val("");
+    $(".assignmentPersonItem").removeClass("hidden");
+    $("#btnClearAssignSearch").addClass("hidden");
+});
