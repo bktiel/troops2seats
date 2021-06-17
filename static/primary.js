@@ -67,10 +67,8 @@ $("#btnGenReport").click(function () {
     //tell user about printing
     if (document.cookie.split(';').some((item) => item.trim().startsWith('printWarning='))) {
         //do nothing if this exists
-    }
-    else
-    {
-        document.cookie="printWarning=true";
+    } else {
+        document.cookie = "printWarning=true";
 
         alert("Select Save to PDF to save a digital copy. Or print it. It's your life.")
     }
@@ -229,7 +227,7 @@ function genEquipmentAssignmentPanel() {
                 //check if already in assignment.
                 var gearInAssignments = vehicleAssignments.find(assignment => {
                     if (assignment !== undefined) {
-                        return (vehicles[assignment.vehicle.trailer] === gear);
+                        return (vehicles[assignment.trailer] === gear);
                     }
                 })
                 //if not already somewhere, pop in list
@@ -479,7 +477,8 @@ $("#lstPersonnel").on('click', ".personItem", function (e) {
         $("#inputPersonName").val(targetPerson.name);
         $('#chkPersonLicense').prop('checked', targetPerson.license);
         $('#dropDownRank.dropdown').find('#content').text(targetPerson.rank);
-        $('#dropDownUnit.dropdown').find('#content').text(units[targetPerson.unit]);
+        $('#dropDownUnit.dropdown').find('button').text(units[targetPerson.unit]);
+
     } catch (e) {
         alert("error occured while loading for edit");
     }
@@ -509,7 +508,7 @@ $("#btnSubmitPerson").click(function () {
     var newPerson = {
         name: $("#inputPersonName").val(),
         rank: $('#dropDownRank.dropdown').find('#content').text(),
-        unit: units.indexOf($('#dropDownUnit.dropdown').find('button').text()),
+        unit: units.indexOf($('#dropDownUnit.dropdown').find('.button').text()),
         license: $("#chkPersonLicense")[0].checked
     }
     if (newPerson.name.length <= 0) {
@@ -863,11 +862,19 @@ function assignmentDropPerson(e) {
     if ($("#tabLstAssignmentPeople").hasClass("is-active")) {
         var person = personnel[targetID]
         if (e.target.id === "inputDriver") {
+            //if there's already something there, put them back in the pool
+            if (e.target.innerHTML !== "") {
+                addPersonItem(personnel[thisEndItem.driver]);
+            }
             thisEndItem.driver = personnel.indexOf(person);
             e.target.innerHTML = person.rank + " " + person.name;
             e.target.classList.add("is-success");
             e.target.classList.remove("is-danger");
         } else if (e.target.id === "inputTC") {
+            //if there's already something there, put them back in the pool
+            if (e.target.innerHTML!=="") {
+                addPersonItem(personnel[thisEndItem.tc]);
+            }
             thisEndItem.tc = personnel.indexOf(person);
             e.target.innerHTML = person.rank + " " + person.name;
             e.target.classList.add("is-success");
@@ -879,10 +886,15 @@ function assignmentDropPerson(e) {
     } else {
         if (e.target.id === "inputTrailer") {
             var gear = vehicles[targetID];
+            //if there's already something there, put them back in the pool
+            if (e.target.innerHTML !== "") {
+                addGearItem(vehicles[thisEndItem.trailer]);
+            }
             thisEndItem.trailer = vehicles.indexOf(gear);
             e.target.innerHTML = gear.bumper
             e.target.classList.add("is-success");
             e.target.classList.remove("is-danger");
+
         } else {
             alert("That can't go here.")
             return;
