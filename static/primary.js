@@ -11,7 +11,9 @@ $.getScript("https://realmtiel.com/troops2seat/static/FileSaver.js", function ()
 var units = ["1PLT"]
 var personnel = [
     {name: "Burch", rank: "PFC", unit: 0, license: true},
-    {name: "Le", rank: "PV2", unit: 0, license: false}];
+    {name: "Le", rank: "PV2", unit: 0, license: false},
+    {name: "Bigley", rank: "PFC", unit: 0, license: true}];
+
 var vehicleTypes = [
     {name: "M1097", image: truk, isEquipment: false},
     {name: "Trailer", image: noImage, isEquipment: true}];
