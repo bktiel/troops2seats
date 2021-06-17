@@ -62,6 +62,7 @@ $("#btnGenReport").click(function () {
     // $("#render").toggle();
     genVehicleAssignments();
     console.log(vehicleAssignments)
+    $("#renderContainer")[0].innerHTML="";
     for (index = 0; index < vehicleAssignments.length; index++) {
         addVehicleAssignment(index, $('.enditem_panel.template')[0], $("#renderContainer")[0])
     }
