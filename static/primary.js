@@ -466,6 +466,9 @@ $("#lstPersonnel").on('click', "#removePerson", function (e) {
 //when person click change color load into panel
 //necessary to use different syntax here since dynamically added elements
 $("#lstPersonnel").on('click', ".personItem", function (e) {
+    //deselect all for sanity
+    $(".personItem").removeClass("is-active");
+
     if ($("#" + editingItem + ".personItem")[0] === e.target.closest("div.personItem")) {
         cleanPersonnelPanel();
         editingItem = false;
