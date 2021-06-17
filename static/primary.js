@@ -22,6 +22,8 @@ var vehicles = [
 var editingItem = false;
 var vehicleAssignments = [];
 
+var PAGE_BREAK_COUNT=8;
+
 
 window.onload = function () {
     //first panel loaded should go here
@@ -66,6 +68,11 @@ $("#btnGenReport").click(function () {
     console.log(vehicleAssignments)
     $("#renderContainer")[0].innerHTML="";
     for (index = 0; index < vehicleAssignments.length; index++) {
+        //every 8 insert page break
+        if(index/PAGE_BREAK_COUNT===1) {
+            alert(index/PAGE_BREAK_COUNT)
+            $("#renderContainer")[0].innerHTML+="<div class='page-break'></div>"
+        }
         addVehicleAssignment(index, $('.enditem_panel.template')[0], $("#renderContainer")[0])
     }
 

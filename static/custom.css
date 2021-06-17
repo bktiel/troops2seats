@@ -175,6 +175,7 @@ div.vehiclePanel .bumper {
     padding-left:1%;
     padding-top: 3%;
 }
+.page-break { display: none; }
 
 @media print {
     html, body {
@@ -191,15 +192,17 @@ div.vehiclePanel .bumper {
         width: 256mm;
     }
     .enditem_panel {
+        display: block;
         width: 45%;
         margin: 2%;
         padding-top:2%;
         padding-bottom:1%;
-        break-inside: avoid;
+        page-break-inside: avoid;
     }
     .enditem_vehiclePreview {
         height: 120px;
     }
+    .page-break { display: block; page-break-after: always; }
     /*#renderContainer {*/
     /*    align-items: center;*/
     /*    justify-content: center;*/
