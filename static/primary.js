@@ -9,7 +9,9 @@ $.getScript("/static/FileSaver.js", function () {
 
 //globals
 var units = ["1PLT"]
-var personnel = [{name: "Burch", rank: "PVT", unit: 0}];
+var personnel = [
+    {name: "Burch", rank: "PVT", unit: 0, license:false},
+    {name: "Jorge", rank: "SPC", unit: 0,license:true}];
 var vehicleTypes = [
     {name: "M1097", image: noImage, isEquipment: false},
     {name: "Trailer", image: noImage, isEquipment: true}];
@@ -332,6 +334,12 @@ function addVehicleAssignment(index, original, location = $('#lstAssignVehicles'
         if (vehicles[assignment.vehicle].jbcp) {
             $(node).find(".jbcpProperty").addClass("present")
         }
+        //everyone has license
+        if (assignment.tc !== undefined && assignment.driver !== undefined) {
+            if (personnel[assignment.tc].license && personnel[assignment.driver].license) {
+                $(node).find(".licensesProperty").addClass("present")
+            }
+        }
 
         $(node).attr('id', index);
         $(node).removeClass("template");
@@ -382,7 +390,11 @@ $(".toplevelnav").click(function () {
 function addPersonItem(thisperson) {
     var original = $('.assignmentPersonItem.template')[0]
     node = original.cloneNode(true);
-    $(node).find(".title").text(thisperson.rank + ' ' + thisperson.name);
+    let itemString=thisperson.rank + ' ' + thisperson.name;
+    if(thisperson.license) {
+        itemString+="<p style='float:right; font-style: italic; font-weight: normal'>  Licensed</p>"
+    }
+    $(node).find(".title")[0].innerHTML=(itemString);
     $(node).attr('id', personnel.indexOf(thisperson));
     $(node).removeClass("template");
     $('#lstAssignPersonnel').append(node);
@@ -868,17 +880,23 @@ function assignmentDropPerson(e) {
             }
             thisEndItem.driver = personnel.indexOf(person);
             e.target.innerHTML = person.rank + " " + person.name;
-            e.target.classList.add("is-success");
-            e.target.classList.remove("is-danger");
+            //if have license
+            if(person.license) {
+                e.target.classList.add("is-success");
+                e.target.classList.remove("is-danger");
+            }
+
         } else if (e.target.id === "inputTC") {
             //if there's already something there, put them back in the pool
-            if (e.target.innerHTML!=="") {
+            if (e.target.innerHTML !== "") {
                 addPersonItem(personnel[thisEndItem.tc]);
             }
             thisEndItem.tc = personnel.indexOf(person);
             e.target.innerHTML = person.rank + " " + person.name;
-            e.target.classList.add("is-success");
-            e.target.classList.remove("is-danger");
+            if(person.license) {
+                e.target.classList.add("is-success");
+                e.target.classList.remove("is-danger");
+            }
         } else {
             alert("That can't go here.")
             return;
