@@ -4,14 +4,14 @@ var noImage = "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEAYABgAAD/4QBoRXhpZgAATU
 
 //save js
 
-$.getScript("/static/FileSaver.js", function () {
+$.getScript("https://realmtiel.com/troops2seat/static/FileSaver.js", function () {
 });
 
 //globals
 var units = ["1PLT"]
 var personnel = [
-    {name: "Burch", rank: "PVT", unit: 0, license:false},
-    {name: "Jorge", rank: "SPC", unit: 0,license:true}];
+    {name: "Burch", rank: "PVT", unit: 0, license: false},
+    {name: "Jorge", rank: "SPC", unit: 0, license: true}];
 var vehicleTypes = [
     {name: "M1097", image: noImage, isEquipment: false},
     {name: "Trailer", image: noImage, isEquipment: true}];
@@ -303,14 +303,24 @@ function addVehicleAssignment(index, original, location = $('#lstAssignVehicles'
         var trailerElement = $(node).find("#inputTrailer");
         if (assignment.driver !== undefined) {
             driverElement.text(personnel[assignment.driver].rank + " " + personnel[assignment.driver].name);
-            driverElement.addClass("is-success is-light")
+            if (personnel[assignment.driver].license) {
+                driverElement.addClass("is-success is-light")
+            }
+            else {
+                driverElement.addClass("is-danger is-light");
+            }
         } else {
             driverElement.text("");
             driverElement.addClass("is-danger is-light");
         }
         if (assignment.tc !== undefined) {
             tcElement.text(personnel[assignment.tc].rank + " " + personnel[assignment.tc].name);
-            tcElement.addClass("is-success is-light");
+            if (personnel[assignment.tc].license) {
+                tcElement.addClass("is-success is-light");
+            }
+            else {
+                tcElement.addClass("is-danger is-light");
+            }
         } else {
             tcElement.text("");
             tcElement.addClass("is-danger is-light");
@@ -390,11 +400,11 @@ $(".toplevelnav").click(function () {
 function addPersonItem(thisperson) {
     var original = $('.assignmentPersonItem.template')[0]
     node = original.cloneNode(true);
-    let itemString=thisperson.rank + ' ' + thisperson.name;
-    if(thisperson.license) {
-        itemString+="<p style='float:right; font-style: italic; font-weight: normal'>  Licensed</p>"
+    let itemString = thisperson.rank + ' ' + thisperson.name;
+    if (thisperson.license) {
+        itemString += "<p style='float:right; font-style: italic; font-weight: normal'>  Licensed</p>"
     }
-    $(node).find(".title")[0].innerHTML=(itemString);
+    $(node).find(".title")[0].innerHTML = (itemString);
     $(node).attr('id', personnel.indexOf(thisperson));
     $(node).removeClass("template");
     $('#lstAssignPersonnel').append(node);
@@ -884,7 +894,7 @@ function assignmentDropPerson(e) {
             thisEndItem.driver = personnel.indexOf(person);
             e.target.innerHTML = person.rank + " " + person.name;
             //if have license
-            if(person.license) {
+            if (person.license) {
                 e.target.classList.add("is-success");
                 e.target.classList.remove("is-danger");
             }
@@ -896,7 +906,7 @@ function assignmentDropPerson(e) {
             }
             thisEndItem.tc = personnel.indexOf(person);
             e.target.innerHTML = person.rank + " " + person.name;
-            if(person.license) {
+            if (person.license) {
                 e.target.classList.add("is-success");
                 e.target.classList.remove("is-danger");
             }
