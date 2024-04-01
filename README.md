@@ -4,4 +4,4 @@ webapp designed to allow for interactive assignment of troops to vehicles and re
 Demo @ <https://realmtiel.com/troops2seat>
 
 
-Credit to <https://github.com/eligrey/FileSaver.js> for FileSaver.js.
+Attribution <https://github.com/eligrey/FileSaver.js> for FileSaver.js.
